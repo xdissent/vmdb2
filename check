@@ -2,7 +2,11 @@
 
 set -eu
 
+python -m CoverageTestRunner --ignore-missing-from=yarns/without-tests yarns
 yarn \
     --shell=python2 \
     --shell-arg '' \
+    --shell-library yarns/lib.py \
+    --env "PYTHONPATH=$(pwd)/yarns" \
+    --cd-datadir \
     yarns/*.yarn "$@"
