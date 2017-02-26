@@ -1,0 +1,34 @@
+---
+title: vmdb2 MVP with echo and error
+author: Lars Wirzenius
+date: work in progress
+...
+
+
+Introduction
+=============================================================================
+
+FIXME. Write an introduction, explaining the purpose and genealogy of
+vmdb2, and an overview of how it is used.
+
+
+Specification files
+=============================================================================
+
+FIXME. Write a short explanation of the syntax and semantics of
+specification files.
+
+
+A happy path
+=============================================================================
+
+FIXME. Write a scenario that runs through a happy path, where two echo
+steps are executed and everything goes fine.
+
+
+Error handling
+=============================================================================
+
+FIXME. Write a scenario with two echo steps, with an error step in
+between. Check that only the first step and an error message are
+output.
