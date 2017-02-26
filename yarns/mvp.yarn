@@ -52,7 +52,7 @@ then?
     GIVEN a specification file called unhappy.vmdb containing
     ... {
     ...     steps: [
-    ...         { echo: "foo" },
+    ...         { echo: "foo", teardown: "foo_teardown" },
     ...         { error: "yikes", error_cleanup: "WAT?!" },
     ...         { echo: "bar" }
     ...     ]
@@ -62,3 +62,4 @@ then?
     AND stdout contains "foo" followed by "yikes"
     AND stdout contains "yikes" followed by "WAT?!"
     AND stdout does NOT contain "bar"
+    AND stdout does NOT contain "foo_teardown"
