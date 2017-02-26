@@ -1,0 +1,10 @@
+README for vmdb2 or vmdebootstrap 2nd generation
+=============================================================================
+
+FIXME: Write this README. Meanwhile, vmdb2 is a from-scratch
+re-invention of the vmdebootstrap program. It is not backwards
+compatible. Where the old program tried to control everything via a
+very large number of configuration settings, the new one reads a
+specification file, essentially a domain-specific language for disk
+image building.
+
