@@ -18,3 +18,7 @@ for step in steps:
         sys.stdout.write('ERROR: {}\n'.format(step['error']))
         sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
         sys.exit(1)
+for step in reversed(steps):
+    if 'teardown' in step:
+        text = step['teardown']
+        sys.stdout.write('{}\n'.format(text))

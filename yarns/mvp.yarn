@@ -24,19 +24,22 @@ A happy path
 
 The first case we look at is one for the happy path: a specification
 with two echo steps, and nothing else. It's very simple, and nothing
-goes wrong when executing it.
+goes wrong when executing it. In addition to the actual thing to do,
+each step may also define a "teardown" thing to do. For example, if
+the step mounts a filesystem, the teardown would unmount it.
 
     SCENARIO happy path
     GIVEN a specification file called happy.vmdb containing
     ... {
     ...     steps: [
-    ...         { echo: "foo" },
+    ...         { echo: "foo", teardown: "foo_teardown" },
     ...         { echo: "bar" }
     ...     ]
     ... }
     WHEN user runs vmdb2 happy.vmdb
     THEN exit code is 0
     AND stdout contains "foo" followed by "bar"
+    AND stdout contains "bar" followed by "foo_teardown"
 
 
 Error handling
