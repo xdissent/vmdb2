@@ -15,6 +15,6 @@ for step in steps:
         text = step['echo']
         sys.stdout.write('{}\n'.format(text))
     else:
-        text = step['error']
-        sys.stdout.write('ERROR: {}\n'.format(text))
+        sys.stdout.write('ERROR: {}\n'.format(step['error']))
+        sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
         sys.exit(1)

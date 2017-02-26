@@ -42,10 +42,6 @@ goes wrong when executing it.
 Error handling
 =============================================================================
 
-FIXME. Write a scenario with two echo steps, with an error step in
-between. Check that only the first step and an error message are
-output.
-
 Sometimes things do not quite go as they should. What does vmdb2 do
 then?
 
@@ -54,11 +50,12 @@ then?
     ... {
     ...     steps: [
     ...         { echo: "foo" },
-    ...         { error: "yikes" },
+    ...         { error: "yikes", error_cleanup: "WAT?!" },
     ...         { echo: "bar" }
     ...     ]
     ... }
     WHEN user runs vmdb2 unhappy.vmdb
     THEN exit code is 1
     AND stdout contains "foo" followed by "yikes"
+    AND stdout contains "yikes" followed by "WAT?!"
     AND stdout does NOT contain "bar"

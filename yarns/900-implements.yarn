@@ -22,7 +22,7 @@ This chapter contains the implementations for all scenario steps.
     exit = helper.get_variable('exit')
     helper.assertEqual(exit, wanted)
 
-    IMPLEMENTS THEN stdout contains "(\S+)" followed by "(\S+)"
+    IMPLEMENTS THEN stdout contains "(.+)" followed by "(.+)"
     first = helper.get_next_match()
     second = helper.get_next_match()
     stdout = helper.get_variable('stdout')
