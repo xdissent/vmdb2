@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+yarn \
+    --shell=python2 \
+    --shell-arg '' \
+    yarns/*.yarn "$@"

@@ -22,8 +22,21 @@ specification files.
 A happy path
 =============================================================================
 
-FIXME. Write a scenario that runs through a happy path, where two echo
-steps are executed and everything goes fine.
+The first case we look at is one for the happy path: a specification
+with two echo steps, and nothing else. It's very simple, and nothing
+goes wrong when executing it.
+
+    SCENARIO happy path
+    GIVEN a specification file called happy.vmdb containing
+    ... {
+    ...     steps: [
+    ...         { echo: "foo" },
+    ...         { echo: "bar" }
+    ...     ]
+    ... }
+    WHEN user runs vmdb2 happy.vmdb
+    THEN exit code is 0
+    AND stdout contains "foo" followed by "bar"
 
 
 Error handling
