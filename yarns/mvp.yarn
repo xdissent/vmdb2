@@ -61,5 +61,5 @@ then?
     THEN exit code is 1
     AND stdout contains "foo" followed by "yikes"
     AND stdout contains "yikes" followed by "WAT?!"
+    AND stdout contains "WAT?!" followed by "foo_teardown"
     AND stdout does NOT contain "bar"
-    AND stdout does NOT contain "foo_teardown"

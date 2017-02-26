@@ -10,6 +10,7 @@ sys.stdout.write('Loadin spec file {}\n'.format(filename))
 with open(filename) as f:
     spec = yaml.safe_load(f)
 steps = spec['steps']
+core_meltdown = False
 for step in steps:
     if 'echo' in step:
         text = step['echo']
@@ -17,8 +18,11 @@ for step in steps:
     else:
         sys.stdout.write('ERROR: {}\n'.format(step['error']))
         sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
-        sys.exit(1)
+        core_meltdown = True
+        break
 for step in reversed(steps):
     if 'teardown' in step:
         text = step['teardown']
         sys.stdout.write('{}\n'.format(text))
+if core_meltdown:
+    sys.exit(1)
