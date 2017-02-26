@@ -1,0 +1,20 @@
+#!/usr/bin/python2
+
+import sys
+
+import yaml
+
+
+filename = sys.argv[1]
+sys.stdout.write('Loadin spec file {}\n'.format(filename))
+with open(filename) as f:
+    spec = yaml.safe_load(f)
+steps = spec['steps']
+for step in steps:
+    if 'echo' in step:
+        text = step['echo']
+        sys.stdout.write('{}\n'.format(text))
+    else:
+        text = step['error']
+        sys.stdout.write('ERROR: {}\n'.format(text))
+        sys.exit(1)
