@@ -8,3 +8,13 @@ very large number of configuration settings, the new one reads a
 specification file, essentially a domain-specific language for disk
 image building.
 
+Hacking
+-----------------------------------------------------------------------------
+
+To run automated tests:
+
+    ./check
+
+You'll need the yarn program (part of the [cmdtest][] package).
+
+[cmdtest]: http://liw.fi/cmdtest/
