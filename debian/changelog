@@ -1,0 +1,6 @@
+vmdb2 (0.0-1) UNRELEASED; urgency=low
+
+  * Initial packaging. This is not intended to be uploaded to Debian, so
+    no closing of an ITP bug.
+
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 27 Feb 2017 19:33:02 +0200
