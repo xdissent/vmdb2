@@ -1,0 +1,50 @@
+.\" Copyright 2017 Lars Wirzenius <liw@liw.fi>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program.  If not, see <http://www.gnu.org/licenses/>.
+.\"
+.TH VMDB2 1
+.SH NAME
+vmdb2 \- create a disk image with Debian installed
+.SH SYNOPSIS
+.B vmdb
+.RI [ options ]
+.IR SPECFILE ...
+.SH DESCRIPTION
+.B vmdb2
+reads a
+.I "specification file"
+that describes a disk image,
+and builds the corresponding image.
+The specification file uses YAML syntax,
+and contains a list of steps.
+Each step tells vmdb2 what to do next.
+.SH OPTIONS
+.SH BUGS
+This is unfinished at this time.
+.SH EXAMPLE
+To build a disk image:
+.PP
+.nf
+.RS
+vmdb2 foo.vmdb
+.RE
+.fi
+.SH "SEE ALSO"
+.BR vmdebootstrap (1).
+.PP
+See the
+.B vmdb2
+manual and test suite for a full explanation of specification files.
+This may be installed as
+.IR /usr/share/doc/vmdb2/manual.html .
