@@ -16,7 +16,7 @@
 # =*= License: GPL-3+ =*=
 
 
-all: yarns.pdf yarns.html
+all: yarns.html
 
 yarns.pdf: $(yarns) Makefile
 	pandoc --chapters --toc -o yarns.pdf *.yarn
