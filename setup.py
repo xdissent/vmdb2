@@ -19,6 +19,7 @@ from distutils.core import setup, Extension
 from distutils.cmd import Command
 from distutils.command.build import build
 from distutils.command.clean import clean
+import os
 import glob
 
 import cliapp
