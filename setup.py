@@ -30,7 +30,7 @@ class Build(build):
 
     def run(self):
         build.run(self)
-        self.build_manpage('obnam', '')
+        self.build_manpage('vmdb2', '')
         self.format_yarns()
 
     def build_manpage(self, program, lang):
