@@ -2,29 +2,44 @@
 
 import sys
 
+import cliapp
+
 import yaml
 
+import vmdb
 
-filename = sys.argv[1]
-sys.stdout.write('Loadin spec file {}\n'.format(filename))
-with open(filename) as f:
-    spec = yaml.safe_load(f)
-steps = spec['steps']
-core_meltdown = False
-steps_taken = []
-for step in steps:
-    steps_taken.append(step)
-    if 'echo' in step:
-        text = step['echo']
-        sys.stdout.write('{}\n'.format(text))
-    else:
-        sys.stdout.write('ERROR: {}\n'.format(step['error']))
-        sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
-        core_meltdown = True
-        break
-for step in reversed(steps_taken):
-    if 'teardown' in step:
-        text = step['teardown']
-        sys.stdout.write('{}\n'.format(text))
-if core_meltdown:
-    sys.exit(1)
+
+class Vmdb2(cliapp.Application):
+
+    def process_args(self, args):
+        filename = args[0]
+        sys.stdout.write('Load spec file {}\n'.format(filename))
+        with open(filename) as f:
+            spec = yaml.safe_load(f)
+
+        steps = spec['steps']
+        core_meltdown = False
+        steps_taken = []
+
+        for step in steps:
+            steps_taken.append(step)
+            if 'echo' in step:
+                text = step['echo']
+                sys.stdout.write('{}\n'.format(text))
+            else:
+                sys.stdout.write('ERROR: {}\n'.format(step['error']))
+                sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
+                core_meltdown = True
+                break
+
+        for step in reversed(steps_taken):
+            if 'teardown' in step:
+                text = step['teardown']
+                sys.stdout.write('{}\n'.format(text))
+
+        if core_meltdown:
+            sys.exit(1)
+
+
+Vmdb2(version=vmdb.__version__).run()
+
