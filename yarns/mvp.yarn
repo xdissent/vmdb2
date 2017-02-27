@@ -33,13 +33,14 @@ the step mounts a filesystem, the teardown would unmount it.
     ... {
     ...     steps: [
     ...         { echo: "foo", teardown: "foo_teardown" },
-    ...         { echo: "bar" }
+    ...         { echo: "bar", teardown: "bar_teardown" }
     ...     ]
     ... }
     WHEN user runs vmdb2 happy.vmdb
     THEN exit code is 0
     AND stdout contains "foo" followed by "bar"
-    AND stdout contains "bar" followed by "foo_teardown"
+    AND stdout contains "bar" followed by "bar_teardown"
+    AND stdout contains "bar_teardown" followed by "foo_teardown"
 
 
 Error handling
@@ -54,7 +55,7 @@ then?
     ...     steps: [
     ...         { echo: "foo", teardown: "foo_teardown" },
     ...         { error: "yikes", error_cleanup: "WAT?!" },
-    ...         { echo: "bar" }
+    ...         { echo: "bar_step", teardown: "bar_teardown" }
     ...     ]
     ... }
     WHEN user runs vmdb2 unhappy.vmdb
@@ -62,4 +63,5 @@ then?
     AND stdout contains "foo" followed by "yikes"
     AND stdout contains "yikes" followed by "WAT?!"
     AND stdout contains "WAT?!" followed by "foo_teardown"
-    AND stdout does NOT contain "bar"
+    AND stdout does NOT contain "bar_step"
+    AND stdout does NOT contain "bar_teardown"
