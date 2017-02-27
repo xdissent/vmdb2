@@ -11,7 +11,9 @@ with open(filename) as f:
     spec = yaml.safe_load(f)
 steps = spec['steps']
 core_meltdown = False
+steps_taken = []
 for step in steps:
+    steps_taken.append(step)
     if 'echo' in step:
         text = step['echo']
         sys.stdout.write('{}\n'.format(text))
@@ -20,7 +22,7 @@ for step in steps:
         sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
         core_meltdown = True
         break
-for step in reversed(steps):
+for step in reversed(steps_taken):
     if 'teardown' in step:
         text = step['teardown']
         sys.stdout.write('{}\n'.format(text))
