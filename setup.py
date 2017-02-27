@@ -59,7 +59,7 @@ class Build(build):
 
     def format_yarns(self):
         print 'building yarns'
-        runcmd(['make', '-C', 'yarns'])
+        cliapp.runcmd(['make', '-C', 'yarns'])
 
 
 setup(
