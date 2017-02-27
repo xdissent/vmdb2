@@ -5,7 +5,7 @@ Section: admin
 Priority: optional
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 9), python-all (>= 2.7), pandoc,
-  python-cliapp
+  python-cliapp, texlive
 X-Python-Version: >= 2.7
 
 Package: vmdb2
