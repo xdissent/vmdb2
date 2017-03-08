@@ -14,10 +14,7 @@ class Vmdb2(cliapp.Application):
         self.step_runners = vmdb.StepRunnerList()
 
     def process_args(self, args):
-        filename = args[0]
-        sys.stdout.write('Load spec file {}\n'.format(filename))
-        logging.info('Load spec file %s', filename)
-        spec = self.load_spec_file(filename)
+        spec = self.load_spec_file(args[0])
 
         steps = spec['steps']
         steps_taken, core_meltdown = self.run_steps(steps)
@@ -28,6 +25,8 @@ class Vmdb2(cliapp.Application):
             sys.exit(1)
 
     def load_spec_file(self, filename):
+        sys.stdout.write('Load spec file {}\n'.format(filename))
+        logging.info('Load spec file %s', filename)
         with open(filename) as f:
             return yaml.safe_load(f)
 
