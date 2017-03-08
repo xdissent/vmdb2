@@ -2,7 +2,7 @@
 
 set -eu
 
-python -m CoverageTestRunner --ignore-missing-from=yarns/without-tests yarns
+python -m CoverageTestRunner --ignore-missing-from=without-tests yarns vmdb
 yarn \
     --shell=python2 \
     --shell-arg '' \
