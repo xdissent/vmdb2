@@ -1,51 +1,6 @@
 #!/usr/bin/python2
 
-import logging
-import sys
-
-import cliapp
-
-import yaml
-
 import vmdb
 
-
-class Vmdb2(cliapp.Application):
-
-    def process_args(self, args):
-        filename = args[0]
-        sys.stdout.write('Load spec file {}\n'.format(filename))
-        logging.info('Load spec file %s', filename)
-        with open(filename) as f:
-            spec = yaml.safe_load(f)
-
-        steps = spec['steps']
-        core_meltdown = False
-        steps_taken = []
-
-        for step in steps:
-            steps_taken.append(step)
-            if 'echo' in step:
-                text = step['echo']
-                sys.stdout.write('{}\n'.format(text))
-            else:
-                sys.stdout.write('ERROR: {}\n'.format(step['error']))
-                sys.stdout.write('ERROR: {}\n'.format(step['error_cleanup']))
-                logging.error('%s', step['error'])
-                logging.error('error cleanup: %s', step['error_cleanup'])
-                core_meltdown = True
-                break
-
-        for step in reversed(steps_taken):
-            if 'teardown' in step:
-                text = step['teardown']
-                sys.stdout.write('{}\n'.format(text))
-                logging.info('%s', text)
-
-        if core_meltdown:
-            logging.error('An error step was used, exiting with error')
-            sys.exit(1)
-
-
-Vmdb2(version=vmdb.__version__).run()
+vmdb.Vmdb2(version=vmdb.__version__).run()
 

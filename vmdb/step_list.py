@@ -16,10 +16,21 @@
 # =*= License: GPL-3+ =*=
 
 
+import cliapp
+
+
 class StepRunnerInterface(object):  # pragma: no cover
 
     def get_required_keys(self):
         raise NotImplementedError()
+
+    def run(self):
+        raise NotImplementedError()
+
+    def teardown(self):
+        # Default implementation does nop, so that sub-classes don't
+        # need to have a nop teardown.
+        pass
 
 
 class StepRunnerList(object):
@@ -39,9 +50,12 @@ class StepRunnerList(object):
             required = set(runner.get_required_keys())
             if actual.intersection(required) == required:
                 return runner
-        raise NoMatchingRunner()
+        raise NoMatchingRunner(actual)
 
 
-class NoMatchingRunner(Exception):
+class NoMatchingRunner(cliapp.AppException):
 
-    pass
+    def __init__(self, keys):
+        super(NoMatchingRunner, self).__init__(
+            'No runner implements step with keys {}'.format(
+            ', '.join(keys)))
