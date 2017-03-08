@@ -17,8 +17,7 @@ class Vmdb2(cliapp.Application):
         filename = args[0]
         sys.stdout.write('Load spec file {}\n'.format(filename))
         logging.info('Load spec file %s', filename)
-        with open(filename) as f:
-            spec = yaml.safe_load(f)
+        spec = self.load_spec_file(filename)
 
         steps = spec['steps']
         core_meltdown = False
@@ -39,3 +38,7 @@ class Vmdb2(cliapp.Application):
         if core_meltdown:
             logging.error('An error step was used, exiting with error')
             sys.exit(1)
+
+    def load_spec_file(self, filename):
+        with open(filename) as f:
+            return yaml.safe_load(f)
