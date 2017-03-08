@@ -21,12 +21,8 @@ class Vmdb2(cliapp.Application):
 
         steps = spec['steps']
         steps_taken, core_meltdown = self.run_steps(steps)
-
-        for step in reversed(steps_taken):
-            if 'teardown' in step:
-                runner = self.step_runners.find(step)
-                runner.teardown(step)
-
+        self.run_teardowns(steps_taken)
+        
         if core_meltdown:
             logging.error('An error step was used, exiting with error')
             sys.exit(1)
@@ -47,3 +43,9 @@ class Vmdb2(cliapp.Application):
                 break
 
         return steps_taken, core_meltdown
+
+    def run_teardowns(self, steps_taken):
+        for step in reversed(steps_taken):
+            if 'teardown' in step:
+                runner = self.step_runners.find(step)
+                runner.teardown(step)
