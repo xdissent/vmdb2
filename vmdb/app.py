@@ -20,15 +20,7 @@ class Vmdb2(cliapp.Application):
         spec = self.load_spec_file(filename)
 
         steps = spec['steps']
-        core_meltdown = False
-        steps_taken = []
-
-        for step in steps:
-            steps_taken.append(step)
-            runner = self.step_runners.find(step)
-            core_meltdown = runner.run(step)
-            if core_meltdown:
-                break
+        steps_taken, core_meltdown = self.run_steps(steps)
 
         for step in reversed(steps_taken):
             if 'teardown' in step:
@@ -42,3 +34,16 @@ class Vmdb2(cliapp.Application):
     def load_spec_file(self, filename):
         with open(filename) as f:
             return yaml.safe_load(f)
+
+    def run_steps(self, steps):
+        core_meltdown = False
+        steps_taken = []
+
+        for step in steps:
+            steps_taken.append(step)
+            runner = self.step_runners.find(step)
+            core_meltdown = runner.run(step)
+            if core_meltdown:
+                break
+
+        return steps_taken, core_meltdown
