@@ -66,6 +66,5 @@ class Vmdb2(cliapp.Application):
 
     def run_teardowns(self, steps_taken):
         for step in reversed(steps_taken):
-            if 'teardown' in step:
-                runner = self.step_runners.find(step)
-                runner.teardown(step)
+            runner = self.step_runners.find(step)
+            runner.teardown(step)

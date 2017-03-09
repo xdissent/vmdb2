@@ -34,11 +34,13 @@ class ErrorPlugin(cliapp.Plugin):
 class ErrorStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['error', 'error_cleanup']
+        return ['error', 'teardown']
 
     def run(self, step_spec):
         sys.stdout.write('ERROR: {}\n'.format(step_spec['error']))
-        sys.stdout.write('ERROR: {}\n'.format(step_spec['error_cleanup']))
         logging.error('%s', step_spec['error'])
-        logging.error('error cleanup: %s', step_spec['error_cleanup'])
         raise vmdb.StepError('an error occurred')
+
+    def teardown(self, step_spec):
+        sys.stdout.write('ERROR: {}\n'.format(step_spec['teardown']))
+        logging.error('error cleanup: %s', step_spec['teardown'])

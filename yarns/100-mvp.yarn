@@ -117,7 +117,7 @@ then?
     ... {
     ...     steps: [
     ...         { echo: "foo", teardown: "foo_teardown" },
-    ...         { error: "yikes", error_cleanup: "WAT?!" },
+    ...         { error: "yikes", teardown: "WAT?!" },
     ...         { echo: "bar_step", teardown: "bar_teardown" }
     ...     ]
     ... }
