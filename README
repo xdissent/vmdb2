@@ -1,12 +1,36 @@
 README for vmdb2 or vmdebootstrap 2nd generation
 =============================================================================
 
-FIXME: Write this README. Meanwhile, vmdb2 is a from-scratch
-re-invention of the vmdebootstrap program. It is not backwards
-compatible. Where the old program tried to control everything via a
-very large number of configuration settings, the new one reads a
-specification file, essentially a domain-specific language for disk
-image building.
+vmdb2 is a program for producing a disk image with Debian installed.
+
+Introduction
+-----------------------------------------------------------------------------
+
+[vmdebootstrap][] installs Debian onto a disk, or disk image. It is
+like the [debootstrap][] tool, except the end result is a disk or disk
+image, not a directory. vmdebootstrap takes care of creating
+partitions, and filesystems, and allows some more customization than
+vmdebootstrap does.
+
+vmdebootstrap is also a messy pile of kludge, and not flexible enough.
+vmdb2 is a re-implementation from scratch, without a need for
+backwards compatibility. It aims to provide more flexibility than
+vmdeboostrap, without becoming anywhere near as complicated. Think of
+vmdb2 as "vmdebootstrap the second generation". The name has changed
+to allow the two tools to installable in paralllel.
+
+The main user-visible difference between vmdebootstrap and vmdb2 is
+that the older program provides extensibitlity via a legion of command
+line options and the newer program by having the user user a domain
+specific language to express what kind of Debian system they want to
+create.
+
+(Lars Wirzenius wrote both vmdebootstrap and vmdb2 and is entitled to
+sneer at his younger self.)
+
+[vmdebootstrap]: http://liw.fi/vmdebootstrap/
+[debootstrap]: https://packages.debian.org/unstable/debootstrap
+
 
 Hacking
 -----------------------------------------------------------------------------
@@ -15,6 +39,29 @@ To run automated tests:
 
     ./check
 
-You'll need the yarn program (part of the [cmdtest][] package).
+You'll need the yarn program (part of the [cmdtest][] package), and
+also [CoverageTestRunner][] for running the unit tests.
 
 [cmdtest]: http://liw.fi/cmdtest/
+[CoverageTestRunner]: http://liw.fi/coverage-test-runner/
+
+
+Legalese
+-----------------------------------------------------------------------------
+
+Copyright 2017  Lars Wirzenius
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+=*= License: GPL-3+ =*=
