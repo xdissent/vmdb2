@@ -63,7 +63,7 @@ class Build(build):
 
 
 setup(
-    name='FIXME',
+    name='vmdb2',
     version=vmdb.__version__,
     description='create disk image with Debian installed',
     author='Lars Wirzenius',
