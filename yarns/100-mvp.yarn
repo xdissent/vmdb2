@@ -76,6 +76,13 @@ raw disk image file, as opposed to some other format. The image is 4
 gigabytes in size. `mkfs` creates an ext4 filesystem in the image
 file; in thie example there are no partitions. And so on.
 
+Steps may need to clean up after themselves. For example, a step that
+mounts a filesystem will need to unmount it at the end of the image
+creation. Also, if a later step fails, then the unmount needs to
+happen as well. This is called a "teardown". Some steps are provided
+by a plugin that handles the teardown automatically, others may need
+to provide instructions for the teardown in the specification file.
+
 By providing well-defined steps that the user may combine as they
 wish, vmdb2 gives great flexibility without much complexity, but at
 the cost of forcing the user to write a longer specification file than
