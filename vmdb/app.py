@@ -34,12 +34,15 @@ class Vmdb2(cliapp.Application):
         core_meltdown = False
         steps_taken = []
 
-        for step in steps:
-            steps_taken.append(step)
-            runner = self.step_runners.find(step)
-            core_meltdown = runner.run(step)
-            if core_meltdown:
-                break
+        try:
+            for step in steps:
+                steps_taken.append(step)
+                runner = self.step_runners.find(step)
+                runner.run(step)
+        except Exception as e:
+            logging.error('ERROR: %s', str(e))
+            sys.stderr.write('ERROR: {}\n'.format(str(e)))
+            core_meltdown = True
 
         return steps_taken, core_meltdown
 

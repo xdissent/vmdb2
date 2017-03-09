@@ -41,4 +41,4 @@ class ErrorStepRunner(vmdb.StepRunnerInterface):
         sys.stdout.write('ERROR: {}\n'.format(step_spec['error_cleanup']))
         logging.error('%s', step_spec['error'])
         logging.error('error cleanup: %s', step_spec['error_cleanup'])
-        return True
+        raise vmdb.StepError('an error occurred')

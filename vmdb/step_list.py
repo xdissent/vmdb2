@@ -53,6 +53,11 @@ class StepRunnerList(object):
         raise NoMatchingRunner(actual)
 
 
+class StepError(cliapp.AppException):
+
+    pass
+
+
 class NoMatchingRunner(cliapp.AppException):
 
     def __init__(self, keys):
