@@ -113,6 +113,28 @@ the step mounts a filesystem, the teardown would unmount it.
     AND stdout contains "bar_teardown" followed by "foo_teardown"
 
 
+Jinja2 templating in specification file values
+=============================================================================
+
+Vmdb2 allows values in specification files to be processed by the
+Jinja2 templating engine. This allows users to do thing such as write
+specifications that use configuration values to determine what
+happens. For our simple echo/error steps, we will write a rule that
+outputs the image file name given by the user. A more realistic
+specification file would instead do thing like create the file.
+
+    SCENARIO jinja2 templating
+    GIVEN a specification file called j2.vmdb containing
+    ... {
+    ...     steps: [
+    ...         { echo: "image is {{ image }}" },
+    ...     ]
+    ... }
+    WHEN user runs vmdb2 --image=foo.img j2.vmdb
+    THEN exit code is 0
+    AND stdout contains "image is foo.img" followed by "bar"
+
+
 Error handling
 =============================================================================
 
