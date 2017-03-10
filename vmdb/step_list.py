@@ -24,10 +24,10 @@ class StepRunnerInterface(object):  # pragma: no cover
     def get_required_keys(self):
         raise NotImplementedError()
 
-    def run(self):
+    def run(self, step_spec, settings):
         raise NotImplementedError()
 
-    def teardown(self):
+    def teardown(self, step_spec, settings):
         # Default implementation does nop, so that sub-classes don't
         # need to have a nop teardown.
         pass

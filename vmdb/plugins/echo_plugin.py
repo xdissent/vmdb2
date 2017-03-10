@@ -36,11 +36,12 @@ class EchoStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['echo']
 
-    def run(self, step_spec):
+    def run(self, step_spec, settings):
         text = step_spec['echo']
         sys.stdout.write('{}\n'.format(text))
 
-    def teardown(self, step_spec):
-        text = step_spec['teardown']
-        sys.stdout.write('{}\n'.format(text))
-        logging.info('%s', text)
+    def teardown(self, step_spec, settings):
+        if 'teardown' in step_spec:
+            text = step_spec['teardown']
+            sys.stdout.write('{}\n'.format(text))
+            logging.info('%s', text)

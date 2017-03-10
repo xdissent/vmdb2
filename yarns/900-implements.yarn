@@ -9,10 +9,10 @@ This chapter contains the implementations for all scenario steps.
     open(filename, 'w').write(spec)
 
     IMPLEMENTS WHEN user runs vmdb2 (.*)
-    filename = helper.get_next_match()
+    args = helper.get_next_match()
     srcdir = os.environ['SRCDIR']
     vmdb2 = os.path.join(srcdir, 'vmdb2')
-    exit, out, err = cliapp.runcmd_unchecked([vmdb2, filename])
+    exit, out, err = cliapp.runcmd_unchecked([vmdb2] + args.split())
     helper.set_variable('exit', exit)
     helper.set_variable('stdout', out)
     helper.set_variable('stderr', err)
@@ -20,6 +20,9 @@ This chapter contains the implementations for all scenario steps.
     IMPLEMENTS THEN exit code is (\d+)
     wanted = int(helper.get_next_match())
     exit = helper.get_variable('exit')
+    print 'exit code', exit
+    print 'stdout:', helper.get_variable('stdout')
+    print 'stderr:', helper.get_variable('stderr')
     helper.assertEqual(exit, wanted)
 
     IMPLEMENTS THEN stdout contains "(.+)" followed by "(.+)"

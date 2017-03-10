@@ -128,6 +128,7 @@ specification file would instead do thing like create the file.
     ... {
     ...     steps: [
     ...         { echo: "image is {{ image }}" },
+    ...         { echo: "bar" },
     ...     ]
     ... }
     WHEN user runs vmdb2 --image=foo.img j2.vmdb

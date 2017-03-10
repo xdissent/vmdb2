@@ -36,11 +36,11 @@ class ErrorStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['error', 'teardown']
 
-    def run(self, step_spec):
+    def run(self, step_spec, settings):
         sys.stdout.write('ERROR: {}\n'.format(step_spec['error']))
         logging.error('%s', step_spec['error'])
         raise vmdb.StepError('an error occurred')
 
-    def teardown(self, step_spec):
+    def teardown(self, step_spec, settings):
         sys.stdout.write('ERROR: {}\n'.format(step_spec['teardown']))
         logging.error('error cleanup: %s', step_spec['teardown'])

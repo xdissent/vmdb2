@@ -20,6 +20,7 @@ import logging
 import sys
 
 import cliapp
+import jinja2
 
 import yaml
 
@@ -27,6 +28,12 @@ import vmdb
 
 
 class Vmdb2(cliapp.Application):
+
+    def add_settings(self):
+        self.settings.string(
+            ['image'],
+            'create image file FILE',
+            metavar='FILE')
 
     def setup(self):
         self.step_runners = vmdb.StepRunnerList()
@@ -55,8 +62,9 @@ class Vmdb2(cliapp.Application):
         try:
             for step in steps:
                 steps_taken.append(step)
+                expanded_step = self.expand_step_spec(step)
                 runner = self.step_runners.find(step)
-                runner.run(step)
+                runner.run(expanded_step, self.settings)
         except Exception as e:
             logging.error('ERROR: %s', str(e))
             sys.stderr.write('ERROR: {}\n'.format(str(e)))
@@ -66,5 +74,23 @@ class Vmdb2(cliapp.Application):
 
     def run_teardowns(self, steps_taken):
         for step in reversed(steps_taken):
+            expanded_step = self.expand_step_spec(step)
             runner = self.step_runners.find(step)
-            runner.teardown(step)
+            runner.teardown(expanded_step, self.settings)
+
+    def expand_step_spec(self, step):
+        expanded = {}
+        for key in step:
+            expanded[key] = self.expand_jinja2(step[key])
+        return expanded
+
+    def expand_jinja2(self, value):
+        template = jinja2.Template(value)
+        vars = self.create_template_vars()
+        return template.render(**vars)
+
+    def create_template_vars(self):
+        vars = dict()
+        for key in self.settings:
+            vars[key] = self.settings[key]
+        return vars
