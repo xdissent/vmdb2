@@ -64,7 +64,7 @@ class Vmdb2(cliapp.Application):
             for step in steps:
                 logging.info('Running step: %r', step)
                 steps_taken.append(step)
-                expanded_step = self.expand_step_spec(step)
+                expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
                 runner.run(expanded_step, self.settings, state)
         except Exception as e:
@@ -77,23 +77,24 @@ class Vmdb2(cliapp.Application):
     def run_teardowns(self, steps_taken, state):
         for step in reversed(steps_taken):
             logging.info('Running teardown: %r', step)
-            expanded_step = self.expand_step_spec(step)
+            expanded_step = self.expand_step_spec(step, state)
             runner = self.step_runners.find(step)
             runner.teardown(expanded_step, self.settings, state)
 
-    def expand_step_spec(self, step):
+    def expand_step_spec(self, step, state):
         expanded = {}
         for key in step:
-            expanded[key] = self.expand_jinja2(step[key])
+            expanded[key] = self.expand_jinja2(step[key], state)
         return expanded
 
-    def expand_jinja2(self, value):
+    def expand_jinja2(self, value, state):
         template = jinja2.Template(value)
-        vars = self.create_template_vars()
+        vars = self.create_template_vars(state)
         return template.render(**vars)
 
-    def create_template_vars(self):
+    def create_template_vars(self, state):
         vars = dict()
         for key in self.settings:
             vars[key] = self.settings[key]
+        vars.update(state.as_dict())
         return vars

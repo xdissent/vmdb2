@@ -18,4 +18,9 @@
 
 class State(object):
 
-    pass
+    def as_dict(self):
+        return {
+            key: getattr(self, key)
+            for key in dir(self)
+            if not key.startswith('_') and not key == 'as_dict'
+        }
