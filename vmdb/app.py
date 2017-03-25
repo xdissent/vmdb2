@@ -62,6 +62,7 @@ class Vmdb2(cliapp.Application):
 
         try:
             for step in steps:
+                logging.info('Running step: %r', step)
                 steps_taken.append(step)
                 expanded_step = self.expand_step_spec(step)
                 runner = self.step_runners.find(step)
@@ -75,6 +76,7 @@ class Vmdb2(cliapp.Application):
 
     def run_teardowns(self, steps_taken, state):
         for step in reversed(steps_taken):
+            logging.info('Running teardown: %r', step)
             expanded_step = self.expand_step_spec(step)
             runner = self.step_runners.find(step)
             runner.teardown(expanded_step, self.settings, state)
