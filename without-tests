@@ -1,6 +1,7 @@
 yarns/lib.py
 vmdb/__init__.py
 vmdb/app.py
+vmdb/state.py
 vmdb/version.py
 vmdb/plugins/error_plugin.py
 vmdb/plugins/echo_plugin.py

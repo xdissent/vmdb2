@@ -41,9 +41,8 @@ class Vmdb2(cliapp.Application):
     def process_args(self, args):
         spec = self.load_spec_file(args[0])
 
-        state = None
-
         steps = spec['steps']
+        state = vmdb.State()
         steps_taken, core_meltdown = self.run_steps(steps, state)
         self.run_teardowns(steps_taken, state)
 
