@@ -41,10 +41,12 @@ class Vmdb2(cliapp.Application):
     def process_args(self, args):
         spec = self.load_spec_file(args[0])
 
+        state = None
+
         steps = spec['steps']
-        steps_taken, core_meltdown = self.run_steps(steps)
-        self.run_teardowns(steps_taken)
-        
+        steps_taken, core_meltdown = self.run_steps(steps, state)
+        self.run_teardowns(steps_taken, state)
+
         if core_meltdown:
             logging.error('An error step was used, exiting with error')
             sys.exit(1)
@@ -55,7 +57,7 @@ class Vmdb2(cliapp.Application):
         with open(filename) as f:
             return yaml.safe_load(f)
 
-    def run_steps(self, steps):
+    def run_steps(self, steps, state):
         core_meltdown = False
         steps_taken = []
 
@@ -64,7 +66,7 @@ class Vmdb2(cliapp.Application):
                 steps_taken.append(step)
                 expanded_step = self.expand_step_spec(step)
                 runner = self.step_runners.find(step)
-                runner.run(expanded_step, self.settings)
+                runner.run(expanded_step, self.settings, state)
         except Exception as e:
             logging.error('ERROR: %s', str(e))
             sys.stderr.write('ERROR: {}\n'.format(str(e)))
@@ -72,11 +74,11 @@ class Vmdb2(cliapp.Application):
 
         return steps_taken, core_meltdown
 
-    def run_teardowns(self, steps_taken):
+    def run_teardowns(self, steps_taken, state):
         for step in reversed(steps_taken):
             expanded_step = self.expand_step_spec(step)
             runner = self.step_runners.find(step)
-            runner.teardown(expanded_step, self.settings)
+            runner.teardown(expanded_step, self.settings, state)
 
     def expand_step_spec(self, step):
         expanded = {}
