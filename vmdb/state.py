@@ -18,9 +18,13 @@
 
 class State(object):
 
+    def __init__(self):
+        self._attrs = {}  # make sure this attribute exists
+        self._attrs = self.as_dict()
+
     def as_dict(self):
         return {
             key: getattr(self, key)
             for key in dir(self)
-            if not key.startswith('_') and not key == 'as_dict'
+            if not key in self._attrs
         }
