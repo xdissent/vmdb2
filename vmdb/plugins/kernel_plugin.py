@@ -34,11 +34,11 @@ class KernelPlugin(cliapp.Plugin):
 class KernelStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['kernel']
+        return ['kernel', 'fs-tag']
 
     def run(self, step_spec, settings, state):
         package = step_spec['kernel']
-        fstag = step_spec['fstag']
+        fstag = step_spec['fs-tag']
         mount_point = state.mounts[fstag]
         sys.stdout.write(
             'Install {} to filesystem at {} ({})\n'.format(
