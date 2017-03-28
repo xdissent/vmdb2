@@ -36,29 +36,32 @@ class MountPlugin(cliapp.Plugin):
 class MountStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['mount', 'tag']
+        return ['mount', 'fs-tag']
 
     def run(self, step_spec, settings, state):
         if not hasattr(state, 'mounts'):
             state.mounts = {}
 
-        device = step_spec['mount']
-        tag = step_spec['tag']
-        if tag in state.mounts:
-            raise Exception('mount tag {} already used'.format(tag))
+        part_tag = step_spec['mount']
+        fs_tag = step_spec['fs-tag']
+        if fs_tag in state.mounts:
+            raise Exception('fs-tag {} already used'.format(fs_tag))
 
+        device = state.parts[part_tag]
         mount_point = tempfile.mkdtemp()
+
         sys.stdout.write(
-            'Mounting {} ({}) on {}\n'.format(device, tag, mount_point))
+            'Mounting {} ({}) on {}\n'.format(device, fs_tag, mount_point))
         cliapp.runcmd(['mount', device, mount_point])
-        state.mounts[tag] = mount_point
+        state.mounts[fs_tag] = mount_point
 
     def teardown(self, step_spec, settings, state):
-        device = step_spec['mount']
-        tag = step_spec['tag']
-        mount_point = state.mounts[tag]
+        part_tag = step_spec['mount']
+        device = state.parts[part_tag]
+        fs_tag = step_spec['fs-tag']
+        mount_point = state.mounts[fs_tag]
         
         sys.stdout.write(
-            'Unmounting {} ({}) from {}\n'.format(mount_point, tag, device))
+            'Unmounting {} ({}) from {}\n'.format(mount_point, fs_tag, device))
         cliapp.runcmd(['umount', mount_point])
         os.rmdir(mount_point)
