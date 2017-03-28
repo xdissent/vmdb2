@@ -68,7 +68,7 @@ class Vmdb2(cliapp.Application):
                 runner = self.step_runners.find(step)
                 runner.run(expanded_step, self.settings, state)
         except Exception as e:
-            logging.error('ERROR: %s', str(e))
+            logging.error('ERROR: %s', str(e), exc_info=True)
             sys.stderr.write('ERROR: {}\n'.format(str(e)))
             core_meltdown = True
 
