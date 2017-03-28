@@ -18,6 +18,7 @@
 
 
 import logging
+import os
 import sys
 
 import cliapp
@@ -43,7 +44,7 @@ class MklabelStepRunner(vmdb.StepRunnerInterface):
         sys.stdout.write(
             'Creating partition table ({}) on {}\n'.format(label_type, device))
         cliapp.runcmd(['parted', device, 'mklabel', label_type], stderr=None)
-        state.parts = []
+        state.parts = {}
 
 
 class MkpartStepRunner(vmdb.StepRunnerInterface):
@@ -56,8 +57,28 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         device = step_spec['device']
         start = step_spec['start']
         end = step_spec['end']
+        part_tag = step_spec['part-tag']
 
         sys.stdout.write(
             'Creating partition ({}) on {} ({} to {})\n'.format(
                 part_type, device, start, end))
         cliapp.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
+
+        cliapp.runcmd(['kpartx', '-d', device])
+        output = cliapp.runcmd(['kpartx', '-asv', device])
+        for line in output.splitlines():
+            print 'kpartx:', line
+            words = line.split()
+            if words[0] == 'add':
+                name = words[2]
+                device_file = '/dev/mapper/{}'.format(name)
+                
+        parts = getattr(state, 'parts', {})
+        parts[part_tag] = device_file
+        state.parts = parts
+
+    def teardown(self, step_spec, settings, state):
+        device = step_spec['device']
+        sys.stdout.write(
+            'Undoing loopback devices for partitions on {}\n'.format(device))
+        cliapp.runcmd(['kpartx', '-d', device])
