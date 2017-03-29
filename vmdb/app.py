@@ -47,7 +47,7 @@ class Vmdb2(cliapp.Application):
         self.run_teardowns(steps_taken, state)
 
         if core_meltdown:
-            logging.error('An error step was used, exiting with error')
+            logging.error('An error occurred, exiting with non-zero exit code')
             sys.exit(1)
 
     def load_spec_file(self, filename):
@@ -57,29 +57,33 @@ class Vmdb2(cliapp.Application):
             return yaml.safe_load(f)
 
     def run_steps(self, steps, state):
+        return self.run_steps_helper(
+            steps, state, 'Running step: %r', 'run', False)
+
+    def run_teardowns(self, steps, state):
+        return self.run_steps_helper(
+            reversed(steps), state, 'Running teardown: %r', 'teardown', True)
+
+    def run_steps_helper(self, steps, state, msg, method_name, keep_going):
         core_meltdown = False
         steps_taken = []
 
-        try:
-            for step in steps:
-                logging.info('Running step: %r', step)
+        for step in steps:
+            try:
+                logging.info(msg, step)
                 steps_taken.append(step)
                 expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
-                runner.run(expanded_step, self.settings, state)
-        except Exception as e:
-            logging.error('ERROR: %s', str(e), exc_info=True)
-            sys.stderr.write('ERROR: {}\n'.format(str(e)))
-            core_meltdown = True
+                method = getattr(runner, method_name)
+                method(expanded_step, self.settings, state)
+            except Exception as e:
+                logging.error('ERROR: %s', str(e), exc_info=True)
+                sys.stderr.write('ERROR: {}\n'.format(str(e)))
+                core_meltdown = True
+                if not keep_going:
+                    break
 
         return steps_taken, core_meltdown
-
-    def run_teardowns(self, steps_taken, state):
-        for step in reversed(steps_taken):
-            logging.info('Running teardown: %r', step)
-            expanded_step = self.expand_step_spec(step, state)
-            runner = self.step_runners.find(step)
-            runner.teardown(expanded_step, self.settings, state)
 
     def expand_step_spec(self, step, state):
         expanded = {}
