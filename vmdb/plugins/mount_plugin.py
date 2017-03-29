@@ -38,12 +38,12 @@ class MountStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['mount', 'fs-tag']
 
-    def run(self, step_spec, settings, state):
+    def run(self, step, settings, state):
         if not hasattr(state, 'mounts'):
             state.mounts = {}
 
-        part_tag = step_spec['mount']
-        fs_tag = step_spec['fs-tag']
+        part_tag = step['mount']
+        fs_tag = step['fs-tag']
         if fs_tag in state.mounts:
             raise Exception('fs-tag {} already used'.format(fs_tag))
 
@@ -55,10 +55,10 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         cliapp.runcmd(['mount', device, mount_point])
         state.mounts[fs_tag] = mount_point
 
-    def teardown(self, step_spec, settings, state):
-        part_tag = step_spec['mount']
+    def teardown(self, step, settings, state):
+        part_tag = step['mount']
         device = state.parts[part_tag]
-        fs_tag = step_spec['fs-tag']
+        fs_tag = step['fs-tag']
         mount_point = state.mounts[fs_tag]
         
         sys.stdout.write(

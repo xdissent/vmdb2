@@ -36,9 +36,9 @@ class MkfsStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['mkfs', 'partition']
 
-    def run(self, step_spec, settings, state):
-        fstype = step_spec['mkfs']
-        part_tag = step_spec['partition']
+    def run(self, step, settings, state):
+        fstype = step['mkfs']
+        part_tag = step['partition']
         device = state.parts[part_tag]
         sys.stdout.write(
             'Creating {} filesystem on {}\n'.format(fstype, device))

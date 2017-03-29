@@ -36,9 +36,9 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['chroot', 'shell']
 
-    def run(self, step_spec, settings, state):
-        fs_tag = step_spec['chroot']
-        shell= step_spec['shell']
+    def run(self, step, settings, state):
+        fs_tag = step['chroot']
+        shell= step['shell']
 
         mount_point = state.mounts[fs_tag]
 

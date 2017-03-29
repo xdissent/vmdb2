@@ -40,9 +40,9 @@ class MkimgStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['mkimg']
 
-    def run(self, step_spec, settings, state):
-        filename = step_spec['mkimg']
-        size = step_spec['size']
+    def run(self, step, settings, state):
+        filename = step['mkimg']
+        size = step['size']
         sys.stdout.write(
             'Creating image file {} (size {})\n'.format(filename, size))
         cliapp.runcmd(

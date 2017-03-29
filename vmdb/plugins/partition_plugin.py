@@ -38,9 +38,9 @@ class MklabelStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['mklabel']
 
-    def run(self, step_spec, settings, state):
-        label_type = step_spec['mklabel']
-        device = step_spec['device']
+    def run(self, step, settings, state):
+        label_type = step['mklabel']
+        device = step['device']
         sys.stdout.write(
             'Creating partition table ({}) on {}\n'.format(label_type, device))
         cliapp.runcmd(['parted', device, 'mklabel', label_type], stderr=None)
@@ -52,12 +52,12 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['mkpart']
 
-    def run(self, step_spec, settings, state):
-        part_type = step_spec['mkpart']
-        device = step_spec['device']
-        start = step_spec['start']
-        end = step_spec['end']
-        part_tag = step_spec['part-tag']
+    def run(self, step, settings, state):
+        part_type = step['mkpart']
+        device = step['device']
+        start = step['start']
+        end = step['end']
+        part_tag = step['part-tag']
 
         sys.stdout.write(
             'Creating partition ({}) on {} ({} to {})\n'.format(
@@ -67,18 +67,17 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         cliapp.runcmd(['kpartx', '-d', device])
         output = cliapp.runcmd(['kpartx', '-asv', device])
         for line in output.splitlines():
-            print 'kpartx:', line
             words = line.split()
             if words[0] == 'add':
                 name = words[2]
                 device_file = '/dev/mapper/{}'.format(name)
-                
+
         parts = getattr(state, 'parts', {})
         parts[part_tag] = device_file
         state.parts = parts
 
-    def teardown(self, step_spec, settings, state):
-        device = step_spec['device']
+    def teardown(self, step, settings, state):
+        device = step['device']
         sys.stdout.write(
             'Undoing loopback devices for partitions on {}\n'.format(device))
         cliapp.runcmd(['kpartx', '-d', device])

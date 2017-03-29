@@ -36,11 +36,11 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
     def get_required_keys(self):
         return ['debootstrap', 'target', 'mirror']
 
-    def run(self, step_spec, settings, state):
-        suite = step_spec['debootstrap']
-        tag = step_spec['target']
+    def run(self, step, settings, state):
+        suite = step['debootstrap']
+        tag = step['target']
         target = state.mounts[tag]
-        mirror = step_spec['mirror']
+        mirror = step['mirror']
         if not (suite and tag and target and mirror):
             raise Exception('missing arg for debootstrap step')
         sys.stdout.write(
