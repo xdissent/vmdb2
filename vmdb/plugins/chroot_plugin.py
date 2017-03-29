@@ -18,6 +18,7 @@
 
 
 import logging
+import os
 import sys
 
 import cliapp
@@ -29,6 +30,8 @@ class ChrootPlugin(cliapp.Plugin):
 
     def enable(self):
         self.app.step_runners.add(ChrootStepRunner())
+    def enable(self):
+        self.app.step_runners.add(ShellStepRunner())
         
 
 class ChrootStepRunner(vmdb.StepRunnerInterface):
@@ -38,7 +41,7 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
 
     def run(self, step, settings, state):
         fs_tag = step['chroot']
-        shell= step['shell']
+        shell = step['shell']
 
         mount_point = state.mounts[fs_tag]
 
@@ -47,3 +50,21 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
         cliapp.runcmd(
             ['chroot', mount_point, 'sh', '-c', shell],
             stdout=None, stderr=None)
+        
+
+class ShellStepRunner(vmdb.StepRunnerInterface):
+
+    def get_required_keys(self):
+        return ['shell', 'root-fs']
+
+    def run(self, step, settings, state):
+        shell = step['shell']
+        fs_tag = step['root-fs']
+
+        sys.stdout.write(
+            'run shell {}\n'.format(' '.join(shell.split('\n'))))
+        env = dict(os.environ)
+        env['ROOT'] = state.mounts[fs_tag]
+        cliapp.runcmd(
+            ['sh', '-c', shell],
+            stdout=None, stderr=None, env=env)
