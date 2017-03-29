@@ -42,6 +42,10 @@ class Vmdb2(cliapp.Application):
         spec = self.load_spec_file(args[0])
 
         steps = spec['steps']
+        # Check that we have step runners for each step
+        for step in steps:
+            self.step_runners.find(step)
+
         state = vmdb.State()
         steps_taken, core_meltdown = self.run_steps(steps, state)
         self.run_teardowns(steps_taken, state)
