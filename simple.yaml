@@ -1,0 +1,30 @@
+steps:
+  - mkimg: "{{ output }}"
+    size: 4G
+
+  - mklabel: gpt
+    device: "{{ output }}"
+
+  - mkpart: primary
+    device: "{{ output }}"
+    start: 0%
+    end: 100%
+    part-tag: root-part
+
+  - mkfs: ext4
+    partition: root-part
+
+  - mount: root-part
+    fs-tag: root-fs
+
+  - debootstrap: stretch
+    mirror: http://http.debian.net/debian
+    target: root-fs
+
+  - kernel: linux-image-amd64
+    fs-tag: root-fs
+
+  - shell: |
+      echo Disk usage of this installation:
+      du -sh "$ROOT"
+    root-fs: root-fs
