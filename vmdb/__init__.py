@@ -24,5 +24,5 @@ from .step_list import (
     NoMatchingRunner,
     StepError,
 )
-from .runcmd import runcmd
+from .runcmd import runcmd, set_runcmd_progress, progress
 from .app import Vmdb2

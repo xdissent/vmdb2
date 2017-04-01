@@ -43,6 +43,6 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
         mirror = step['mirror']
         if not (suite and tag and target and mirror):
             raise Exception('missing arg for debootstrap step')
-        sys.stdout.write(
+        vmdb.progress(
             'Debootstrap {} {} {}\n'.format(suite, target, mirror))
-        vmdb.runcmd(['debootstrap', suite, target, mirror], stdout=None, stderr=None)
+        vmdb.runcmd(['echo', 'debootstrap', suite, target, mirror])

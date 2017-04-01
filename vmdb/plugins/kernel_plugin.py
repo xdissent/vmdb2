@@ -40,10 +40,10 @@ class KernelStepRunner(vmdb.StepRunnerInterface):
         package = step['kernel']
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]
-        sys.stdout.write(
+        vmdb.progress(
             'Install {} to filesystem at {} ({})\n'.format(
                 package, mount_point, fstag))
         vmdb.runcmd(
-            ['chroot', mount_point, 'apt', '-y', 'install', package],
-            stdout=None, stderr=None)
+            ['echo', 'chroot', mount_point,
+             'apt-get', '-y', '--no-show-progress', 'install', package])
 

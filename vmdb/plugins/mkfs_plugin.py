@@ -40,6 +40,6 @@ class MkfsStepRunner(vmdb.StepRunnerInterface):
         fstype = step['mkfs']
         part_tag = step['partition']
         device = state.parts[part_tag]
-        sys.stdout.write(
+        vmdb.progress(
             'Creating {} filesystem on {}\n'.format(fstype, device))
         vmdb.runcmd(['/sbin/mkfs', '-t', fstype, device])

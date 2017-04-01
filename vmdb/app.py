@@ -21,7 +21,7 @@ import sys
 
 import cliapp
 import jinja2
-
+import ttystatus
 import yaml
 
 import vmdb
@@ -35,10 +35,16 @@ class Vmdb2(cliapp.Application):
             'create image file FILE',
             metavar='FILE')
 
+        self.settings.boolean(
+            ['verbose', 'v'],
+            'verbose output')
+
     def setup(self):
         self.step_runners = vmdb.StepRunnerList()
 
     def process_args(self, args):
+        self.progress = self.create_progress()
+
         spec = self.load_spec_file(args[0])
 
         steps = spec['steps']
@@ -48,15 +54,29 @@ class Vmdb2(cliapp.Application):
 
         state = vmdb.State()
         steps_taken, core_meltdown = self.run_steps(steps, state)
+        self.progress.clear()
+        self.progress = self.create_progress()
+        if core_meltdown:
+            vmdb.progress('Something went wrong, cleaning up!')
+        else:
+            vmdb.progress('All went find, cleaning up.')
         self.run_teardowns(steps_taken, state)
+
+        self.progress.finish()
 
         if core_meltdown:
             logging.error('An error occurred, exiting with non-zero exit code')
             sys.exit(1)
 
+    def create_progress(self):
+        progress = ttystatus.TerminalStatus(period=0)
+        progress.format(
+            '%ElapsedTime() Step %Index(step,steps): %String(current)')
+        vmdb.set_runcmd_progress(progress, self.settings['verbose'])
+        return progress
+
     def load_spec_file(self, filename):
-        sys.stdout.write('Load spec file {}\n'.format(filename))
-        logging.info('Load spec file %s', filename)
+        vmdb.progress('Load spec file {}\n'.format(filename))
         with open(filename) as f:
             return yaml.safe_load(f)
 
@@ -66,12 +86,13 @@ class Vmdb2(cliapp.Application):
 
     def run_teardowns(self, steps, state):
         return self.run_steps_helper(
-            reversed(steps), state, 'Running teardown: %r', 'teardown', True)
+            list(reversed(steps)), state, 'Running teardown: %r', 'teardown', True)
 
     def run_steps_helper(self, steps, state, msg, method_name, keep_going):
         core_meltdown = False
         steps_taken = []
 
+        self.progress['steps'] = steps
         for step in steps:
             try:
                 logging.info(msg, step)
@@ -79,15 +100,20 @@ class Vmdb2(cliapp.Application):
                 expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
                 method = getattr(runner, method_name)
+                self.progress['step'] = step
+                self.progress['curstep'] = self.format_step(runner, step)
                 method(expanded_step, self.settings, state)
             except Exception as e:
                 logging.error('ERROR: %s', str(e), exc_info=True)
-                sys.stderr.write('ERROR: {}\n'.format(str(e)))
+                self.progress.error('ERROR: {}\n'.format(str(e)))
                 core_meltdown = True
                 if not keep_going:
                     break
 
         return steps_taken, core_meltdown
+
+    def format_step(self, runner, step):
+        return str(step)
 
     def expand_step_spec(self, step, state):
         expanded = {}

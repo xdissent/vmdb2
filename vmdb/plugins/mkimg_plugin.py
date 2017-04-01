@@ -43,7 +43,6 @@ class MkimgStepRunner(vmdb.StepRunnerInterface):
     def run(self, step, settings, state):
         filename = step['mkimg']
         size = step['size']
-        sys.stdout.write(
+        vmdb.progress(
             'Creating image file {} (size {})\n'.format(filename, size))
-        vmdb.runcmd(
-            ['qemu-img', 'create', '-f', 'raw', filename, size])
+        vmdb.runcmd(['qemu-img', 'create', '-f', 'raw', filename, size])
