@@ -106,7 +106,7 @@ the step mounts a filesystem, the teardown would unmount it.
     ...         { echo: "bar", teardown: "bar_teardown" }
     ...     ]
     ... }
-    WHEN user runs vmdb2 happy.vmdb
+    WHEN user runs vmdb2 -v happy.vmdb
     THEN exit code is 0
     AND stdout contains "foo" followed by "bar"
     AND stdout contains "bar" followed by "bar_teardown"
@@ -127,11 +127,11 @@ specification file would instead do thing like create the file.
     GIVEN a specification file called j2.vmdb containing
     ... {
     ...     steps: [
-    ...         { echo: "image is {{ image }}" },
+    ...         { echo: "image is {{ output }}" },
     ...         { echo: "bar" },
     ...     ]
     ... }
-    WHEN user runs vmdb2 --image=foo.img j2.vmdb
+    WHEN user runs vmdb2 -v --output=foo.img j2.vmdb
     THEN exit code is 0
     AND stdout contains "image is foo.img" followed by "bar"
 
@@ -151,7 +151,7 @@ then?
     ...         { echo: "bar_step", teardown: "bar_teardown" }
     ...     ]
     ... }
-    WHEN user runs vmdb2 unhappy.vmdb
+    WHEN user runs vmdb2 -v unhappy.vmdb
     THEN exit code is 1
     AND stdout contains "foo" followed by "yikes"
     AND stdout contains "yikes" followed by "WAT?!"

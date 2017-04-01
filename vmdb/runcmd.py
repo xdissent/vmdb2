@@ -37,7 +37,9 @@ def progress(msg):
     logging.info(msg)
     _progress['current'] = msg
     if _verbose:
-        _progress.notify(msg.rstrip())
+        sys.stdout.write(msg)
+        if not msg.endswith('\n'):
+            sys.stdout.write('\n')
 
 
 def runcmd(argv, *argvs, **kwargs):
