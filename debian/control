@@ -5,12 +5,15 @@ Section: admin
 Priority: optional
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 9), python-all (>= 2.7), pandoc,
-  python-cliapp, python-jinja2
+  python-cliapp, python-jinja2, cmdtest, python-yaml, debootstrap,
+  parted
 X-Python-Version: >= 2.7
 
 Package: vmdb2
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, python (>= 2.7)
+Depends: ${python:Depends}, ${misc:Depends}, python (>= 2.7),
+  python-cliapp, python-jinja2, cmdtest, python-yaml, debootstrap,
+  parted
 Description: creator of disk images with Debian installed
  vmdb2 will be a successor of vmdebootstrap. It will create disk images
  for virtual machines and real hardware, with partitioning, and a boot
