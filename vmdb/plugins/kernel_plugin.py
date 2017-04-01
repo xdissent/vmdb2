@@ -44,6 +44,6 @@ class KernelStepRunner(vmdb.StepRunnerInterface):
             'Install {} to filesystem at {} ({})\n'.format(
                 package, mount_point, fstag))
         vmdb.runcmd(
-            ['echo', 'chroot', mount_point,
+            ['chroot', mount_point,
              'apt-get', '-y', '--no-show-progress', 'install', package])
 
