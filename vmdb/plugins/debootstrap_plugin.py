@@ -45,4 +45,4 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
             raise Exception('missing arg for debootstrap step')
         sys.stdout.write(
             'Debootstrap {} {} {}\n'.format(suite, target, mirror))
-        cliapp.runcmd(['debootstrap', suite, target, mirror], stdout=None, stderr=None)
+        vmdb.runcmd(['debootstrap', suite, target, mirror], stdout=None, stderr=None)

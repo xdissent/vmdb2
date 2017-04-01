@@ -16,34 +16,29 @@
 # =*= License: GPL-3+ =*=
 
 
-
 import logging
 import sys
 
 import cliapp
 
-import vmdb
+
+def runcmd(argv, *argvs, **kwargs):
+    kwargs['stdout_callback'] = _log_stdout
+    kwargs['stderr_callback'] = _log_stderr
+    return cliapp.runcmd(argv, *argvs, **kwargs)
 
 
-class KernelPlugin(cliapp.Plugin):
+def _log_stdout(data):
+    logging.debug('STDOUT: %r', data)
+    sys.stdout.write(data)
+    if not data.endswith('\n'):
+        sys.stdout.write('\n')
+    return data
 
-    def enable(self):
-        self.app.step_runners.add(KernelStepRunner())
-        
 
-class KernelStepRunner(vmdb.StepRunnerInterface):
-
-    def get_required_keys(self):
-        return ['kernel', 'fs-tag']
-
-    def run(self, step, settings, state):
-        package = step['kernel']
-        fstag = step['fs-tag']
-        mount_point = state.mounts[fstag]
-        sys.stdout.write(
-            'Install {} to filesystem at {} ({})\n'.format(
-                package, mount_point, fstag))
-        vmdb.runcmd(
-            ['chroot', mount_point, 'apt', '-y', 'install', package],
-            stdout=None, stderr=None)
-
+def _log_stderr(data):
+    logging.debug('STDERR: %r', data)
+    sys.stderr.write(data)
+    if not data.endswith('\n'):
+        sys.stderr.write('\n')
+    return data

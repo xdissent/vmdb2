@@ -30,7 +30,6 @@ class ChrootPlugin(cliapp.Plugin):
 
     def enable(self):
         self.app.step_runners.add(ChrootStepRunner())
-    def enable(self):
         self.app.step_runners.add(ShellStepRunner())
         
 
@@ -47,7 +46,7 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
 
         sys.stdout.write(
             'chroot {} to {}\n'.format(mount_point, ' '.join(shell.split('\n'))))
-        cliapp.runcmd(
+        vmdb.runcmd(
             ['chroot', mount_point, 'sh', '-c', shell],
             stdout=None, stderr=None)
         
@@ -65,6 +64,6 @@ class ShellStepRunner(vmdb.StepRunnerInterface):
             'run shell {}\n'.format(' '.join(shell.split('\n'))))
         env = dict(os.environ)
         env['ROOT'] = state.mounts[fs_tag]
-        cliapp.runcmd(
+        vmdb.runcmd(
             ['sh', '-c', shell],
             stdout=None, stderr=None, env=env)

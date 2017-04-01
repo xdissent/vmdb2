@@ -52,7 +52,7 @@ class MountStepRunner(vmdb.StepRunnerInterface):
 
         sys.stdout.write(
             'Mounting {} ({}) on {}\n'.format(device, fs_tag, mount_point))
-        cliapp.runcmd(['mount', device, mount_point])
+        vmdb.runcmd(['mount', device, mount_point])
         state.mounts[fs_tag] = mount_point
 
     def teardown(self, step, settings, state):
@@ -63,5 +63,5 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         
         sys.stdout.write(
             'Unmounting {} ({}) from {}\n'.format(mount_point, fs_tag, device))
-        cliapp.runcmd(['umount', mount_point])
+        vmdb.runcmd(['umount', mount_point])
         os.rmdir(mount_point)

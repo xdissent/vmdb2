@@ -42,4 +42,4 @@ class MkfsStepRunner(vmdb.StepRunnerInterface):
         device = state.parts[part_tag]
         sys.stdout.write(
             'Creating {} filesystem on {}\n'.format(fstype, device))
-        cliapp.runcmd(['/sbin/mkfs', '-t', fstype, device])
+        vmdb.runcmd(['/sbin/mkfs', '-t', fstype, device])

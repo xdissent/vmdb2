@@ -43,7 +43,7 @@ class MklabelStepRunner(vmdb.StepRunnerInterface):
         device = step['device']
         sys.stdout.write(
             'Creating partition table ({}) on {}\n'.format(label_type, device))
-        cliapp.runcmd(['parted', device, 'mklabel', label_type], stderr=None)
+        vmdb.runcmd(['parted', device, 'mklabel', label_type])
         state.parts = {}
 
 
@@ -62,16 +62,18 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         sys.stdout.write(
             'Creating partition ({}) on {} ({} to {})\n'.format(
                 part_type, device, start, end))
-        cliapp.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
+        vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
 
-        cliapp.runcmd(['kpartx', '-d', device])
-        output = cliapp.runcmd(['kpartx', '-asv', device])
+        vmdb.runcmd(['kpartx', '-d', device])
+        output = vmdb.runcmd(['kpartx', '-asv', device])
+        device_file = None
         for line in output.splitlines():
             words = line.split()
             if words[0] == 'add':
                 name = words[2]
                 device_file = '/dev/mapper/{}'.format(name)
 
+        assert device_file is not None
         parts = getattr(state, 'parts', {})
         parts[part_tag] = device_file
         state.parts = parts
@@ -80,4 +82,4 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         device = step['device']
         sys.stdout.write(
             'Undoing loopback devices for partitions on {}\n'.format(device))
-        cliapp.runcmd(['kpartx', '-d', device])
+        vmdb.runcmd(['kpartx', '-d', device])
