@@ -68,7 +68,7 @@ steps that will become incomplete as soon as development continues:
 * chroot (run shell snippet in chroot)
 * shell (run shell snippet without chroot)
 * debootstrap (run deboostrap)
-* kernel (installs kernel)
+* apt (install packagers in chroot with apt)
 * mkimg (create disk image)
 * mklabel (create partition table on a disk image)
 * mkpart (create partition)
