@@ -10,7 +10,6 @@ This chapter contains the implementations for all scenario steps.
 
     IMPLEMENTS WHEN user runs vmdb2 (.*)
     args = get_next_match()
-    srcdir = os.environ['SRCDIR']
     vmdb2 = os.path.join(srcdir, 'vmdb2')
     exit, out, err = cliapp.runcmd_unchecked([vmdb2] + args.split())
     helper.set_variable('exit', exit)
