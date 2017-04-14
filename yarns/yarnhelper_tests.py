@@ -22,31 +22,6 @@ import unittest
 import yarnhelper
 
 
-class PersistentVariableTests(unittest.TestCase):
-
-    def setUp(self):
-        # We need this so that tearDown works
-        pass
-
-    def tearDown(self):
-        if os.path.exists(yarnhelper.variables_filename):
-            os.remove(yarnhelper.variables_filename)
-
-    def test_raises_error_if_no_such_variable(self):
-        h = yarnhelper.YarnHelper()
-        with self.assertRaises(yarnhelper.Error):
-            h.get_variable('FOO')
-            print
-            print 'variables:', h._variables
-
-    def test_sets_variable_persistently(self):
-        h = yarnhelper.YarnHelper()
-        h.set_variable('FOO', 'bar')
-
-        h2 = yarnhelper.YarnHelper()
-        self.assertEqual(h2.get_variable('FOO'), 'bar')
-
-
 class HttpTests(unittest.TestCase):
 
     def test_constructs_aliased_request(self):

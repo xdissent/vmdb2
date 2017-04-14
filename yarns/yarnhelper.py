@@ -31,32 +31,6 @@ variables_filename = os.environ.get('VARIABLES', 'vars.yaml')
 
 class YarnHelper(object):
 
-    def __init__(self):
-        self._variables = None  # None means not loaded, otherwise dict
-
-    def get_variable(self, name):
-        if self._variables is None:
-            self._variables = self._load_variables()
-        if name not in self._variables:
-            raise Error('no variable {}'.format(name))
-        return self._variables[name]
-
-    def _load_variables(self):
-        if os.path.exists(variables_filename):
-            with open(variables_filename, 'r') as f:
-                return yaml.safe_load(f)
-        return {}
-
-    def set_variable(self, name, value):
-        if self._variables is None:
-            self._variables = {}
-        self._variables[name] = value
-        self._save_variables(self._variables)
-
-    def _save_variables(self, variables):
-        with open(variables_filename, 'w') as f:
-            yaml.safe_dump(variables, f)
-
     def construct_aliased_http_request(
             self, address, method, url, data=None, headers=None):
 
@@ -100,8 +74,3 @@ class YarnHelper(object):
             m.expunge()
         m.close()
         m.logout()
-
-
-class Error(Exception):
-
-    pass

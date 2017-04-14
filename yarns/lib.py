@@ -9,4 +9,6 @@ import yarnhelper
 srcdir = os.environ['SRCDIR']
 datadir = os.environ['DATADIR']
 
+vars = Variables(datadir)
+
 helper = yarnhelper.YarnHelper()
