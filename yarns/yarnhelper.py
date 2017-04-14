@@ -32,19 +32,7 @@ variables_filename = os.environ.get('VARIABLES', 'vars.yaml')
 class YarnHelper(object):
 
     def __init__(self):
-        self._env = dict(os.environ)
-        self._next_match = 1
         self._variables = None  # None means not loaded, otherwise dict
-
-    def set_environment(self, env):
-        self._env = dict(env)
-
-    def get_next_match(self):
-        name = 'MATCH_{}'.format(self._next_match)
-        if name not in self._env:
-            raise Error('no next match')
-        self._next_match += 1
-        return self._env[name]
 
     def get_variable(self, name):
         if self._variables is None:

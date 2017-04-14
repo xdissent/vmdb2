@@ -22,40 +22,6 @@ import unittest
 import yarnhelper
 
 
-class GetNextMatchTests(unittest.TestCase):
-
-    def test_raises_error_if_no_next_match(self):
-        h = yarnhelper.YarnHelper()
-        h.set_environment({})
-        with self.assertRaises(yarnhelper.Error):
-            h.get_next_match()
-
-    def test_returns_first_match_if_there(self):
-        h = yarnhelper.YarnHelper()
-        h.set_environment({
-            'MATCH_1': 'first',
-        })
-        self.assertEqual(h.get_next_match(), 'first')
-
-    def test_returns_second_match_if_there(self):
-        h = yarnhelper.YarnHelper()
-        h.set_environment({
-            'MATCH_1': 'first',
-            'MATCH_2': 'second',
-        })
-        self.assertEqual(h.get_next_match(), 'first')
-        self.assertEqual(h.get_next_match(), 'second')
-
-    def test_raises_error_if_no_more_matches(self):
-        h = yarnhelper.YarnHelper()
-        h.set_environment({
-            'MATCH_1': 'first',
-        })
-        self.assertEqual(h.get_next_match(), 'first')
-        with self.assertRaises(yarnhelper.Error):
-            h.get_next_match()
-
-
 class PersistentVariableTests(unittest.TestCase):
 
     def setUp(self):
