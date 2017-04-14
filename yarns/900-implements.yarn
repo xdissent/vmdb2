@@ -4,12 +4,12 @@ IMPLEMENTS for all scenario steps
 This chapter contains the implementations for all scenario steps.
 
     IMPLEMENTS GIVEN a specification file called (\S+) containing (.+)
-    filename = helper.get_next_match()
-    spec = helper.get_next_match()
+    filename = get_next_match()
+    spec = get_next_match()
     open(filename, 'w').write(spec)
 
     IMPLEMENTS WHEN user runs vmdb2 (.*)
-    args = helper.get_next_match()
+    args = get_next_match()
     srcdir = os.environ['SRCDIR']
     vmdb2 = os.path.join(srcdir, 'vmdb2')
     exit, out, err = cliapp.runcmd_unchecked([vmdb2] + args.split())
@@ -18,7 +18,7 @@ This chapter contains the implementations for all scenario steps.
     helper.set_variable('stderr', err)
 
     IMPLEMENTS THEN exit code is (\d+)
-    wanted = int(helper.get_next_match())
+    wanted = int(get_next_match())
     exit = helper.get_variable('exit')
     print 'exit code', exit
     print 'stdout:', helper.get_variable('stdout')
@@ -26,8 +26,8 @@ This chapter contains the implementations for all scenario steps.
     helper.assertEqual(exit, wanted)
 
     IMPLEMENTS THEN stdout contains "(.+)" followed by "(.+)"
-    first = helper.get_next_match()
-    second = helper.get_next_match()
+    first = get_next_match()
+    second = get_next_match()
     stdout = helper.get_variable('stdout')
     first_i = stdout.find(first)
     helper.assertGreaterThan(first_i, 0)
@@ -36,7 +36,7 @@ This chapter contains the implementations for all scenario steps.
     helper.assertGreaterThan(second_i, -1)
 
     IMPLEMENTS THEN stdout does NOT contain "(\S+)"
-    what = helper.get_next_match()
+    what = get_next_match()
     stdout = helper.get_variable('stdout')
     i = stdout.find(what)
     helper.assertEqual(i, -1)
