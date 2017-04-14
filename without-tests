@@ -4,6 +4,7 @@ vmdb/app.py
 vmdb/runcmd.py
 vmdb/state.py
 vmdb/version.py
+vmdb/plugins/apt_plugin.py
 vmdb/plugins/chroot_plugin.py
 vmdb/plugins/debootstrap_plugin.py
 vmdb/plugins/echo_plugin.py
