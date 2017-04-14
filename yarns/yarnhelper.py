@@ -77,18 +77,6 @@ class YarnHelper(object):
         resp = s.send(r)
         return resp.status_code, resp.content
 
-    def assertEqual(self, a, b):
-        if a != b:
-            raise Error('assertion {!r} == {!r} failed'.format(a, b))
-
-    def assertNotEqual(self, a, b):
-        if a == b:
-            raise Error('assertion {!r} != {!r} failed'.format(a, b))
-
-    def assertGreaterThan(self, a, b):
-        if a <= b:
-            raise Error('assertion {!r} > {!r} failed'.format(a, b))
-
     def get_password_with_pass(self, pass_home, pass_name):  # pragma: no cover
         p = subprocess.Popen(
             ['env', 'HOME={}'.format(pass_home), 'pass', 'show', pass_name],

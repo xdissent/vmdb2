@@ -56,34 +56,3 @@ class HttpTests(unittest.TestCase):
         r = h.construct_aliased_http_request(server, 'GET', url)
         self.assertEqual(r.url, 'http://new.example.com/path')
         self.assertEqual(r.headers['Host'], 'www.example.com')
-
-
-class AssertionTests(unittest.TestCase):
-
-    def test_assertEqual_asserts_equals_correctly(self):
-        h = yarnhelper.YarnHelper()
-        self.assertEqual(h.assertEqual(0, 0), None)
-
-    def test_assertEqual_raises_error_for_nonequal_values(self):
-        h = yarnhelper.YarnHelper()
-        with self.assertRaises(yarnhelper.Error):
-            h.assertEqual(0, 1)
-
-    def test_assertNotEqual_asserts_nonequal_correct(self):
-        h = yarnhelper.YarnHelper()
-        self.assertEqual(h.assertNotEqual(0, 1), None)
-
-    def test_assertNotEqual_raises_error_for_equal_values(self):
-        h = yarnhelper.YarnHelper()
-        with self.assertRaises(yarnhelper.Error):
-            h.assertNotEqual(0, 0)
-
-    def test_assertGreaterThan_raises_error_for_equal_values(self):
-        h = yarnhelper.YarnHelper()
-        with self.assertRaises(yarnhelper.Error):
-            h.assertGreaterThan(0, 0)
-
-    def test_assertGreaterThan_raises_error_for_unordered_values(self):
-        h = yarnhelper.YarnHelper()
-        with self.assertRaises(yarnhelper.Error):
-            h.assertGreaterThan(0, 1)
