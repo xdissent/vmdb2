@@ -64,7 +64,7 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
                 part_type, device, start, end))
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
 
-        vmdb.runcmd(['kpartx', '-d', device])
+        vmdb.runcmd(['kpartx', '-dsv', device])
         output = vmdb.runcmd(['kpartx', '-asv', device])
         device_file = None
         for line in output.splitlines():
@@ -82,4 +82,4 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         device = step['device']
         vmdb.progress(
             'Undoing loopback devices for partitions on {}\n'.format(device))
-        vmdb.runcmd(['kpartx', '-d', device])
+        vmdb.runcmd(['kpartx', '-dsv', device])
