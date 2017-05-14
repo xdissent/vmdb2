@@ -1,7 +1,7 @@
 NEWS for vmdb2, the Debian disk image builder
 =============================================================================
 
-Version 0.1+git, not yet released
+Version 0.2, released 2017-05-14
 ---------------------------------
 
 * Add plugin to provide steps to cache the rootfs, and to unpack the
