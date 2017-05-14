@@ -32,6 +32,24 @@ class StepRunnerInterface(object):  # pragma: no cover
         # need to have a nop teardown.
         pass
 
+    def skip(self, step_spec, settings, state):
+        # Return true if step should be skipped and not run. Does not
+        # apply to teardowns.
+
+        # Skipping is indicated by the step having a field 'unless',
+        # which is either the name of a variable (field in state), or
+        # a list of such names. If all variables have a value that
+        # evaluates as truth, the step is skipped.
+
+        value = step_spec.get('unless', None)
+        if value is None:
+            return False
+
+        if isinstance(value, list):
+            return all(getattr(state, field, False) for field in value)
+        else:
+            return getattr(state, value, False)
+
 
 class StepRunnerList(object):
 

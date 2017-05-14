@@ -4,6 +4,18 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.1+git, not yet released
 ---------------------------------
 
+* Add plugin to provide steps to cache the rootfs, and to unpack the
+  rootfs from the cache, instead of running debootstrap or installing
+  packages. This speeds up iteration time from about 9 minutes to 40
+  seconds on my laptop. See small.vmdb for an example.
+
+* Add a generic "unless this condition is true" functionality to
+  steps. If a step has a field "unless: foo" it is skipped the
+  variable foo exists and is true. The variables are set by steps, and
+  currently only the rootfs unpacking step sets a variable (the
+  `rootfs_unpacked` variable). This allows debootstrap to be skipped
+  if the rootfs has already been created by unpacking a cached
+  tarball.
 
 Version 0.1, released 2017-05-13
 -----------------------------------------------------------------------------

@@ -37,6 +37,9 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
         return ['debootstrap', 'target', 'mirror']
 
     def run(self, step, settings, state):
+        if getattr(state, 'rootfs_unpacked', False):
+            return
+
         suite = step['debootstrap']
         tag = step['target']
         target = state.mounts[tag]

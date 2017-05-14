@@ -37,6 +37,9 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         return ['apt', 'fs-tag']
 
     def run(self, step, settings, state):
+        if getattr(state, 'rootfs_unpacked', False):
+            return
+
         package = step['apt']
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]

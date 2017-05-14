@@ -26,12 +26,19 @@ steps:
   - mount: root-part
     fs-tag: root-fs
 
+  - unpack-rootfs: root-fs
+
   - debootstrap: stretch
     mirror: http://http.debian.net/debian
     target: root-fs
+    unless: rootfs_unpacked
 
   - apt: linux-image-amd64
     fs-tag: root-fs
+    unless: rootfs_unpacked
+
+  - cache-rootfs: root-fs
+    unless: rootfs_unpacked
 
   - grub: uefi
     root-fs: root-fs
