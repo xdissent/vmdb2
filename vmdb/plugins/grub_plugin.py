@@ -95,8 +95,14 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
     def run(self, step, settings, state):
         flavor = step['grub']
-        assert flavor == 'uefi'
+        if flavor == 'uefi':
+            self.install_uefi(step, settings, state)
+        elif flavor == 'bios':
+            self.install_bios(step, settings, state)
+        else:
+            raise Exception('Unknown GRUB flavor {}'.format(flavor))
 
+    def install_uefi(self, step, settings, state):
         grub_package = 'grub-efi-amd64'
         grub_target = 'x86_64-efi'
 
@@ -142,6 +148,49 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
         self.unmount(state)
 
+    def install_bios(self, step, settings, state):
+        vmdb.progress('Installing GRUB for BIOS')
+
+        grub_package = 'grub-pc'
+        grub_target = 'i386-pc'
+
+        device = step['device']
+
+        rootfs = step['root-fs']
+        chroot = state.mounts[rootfs]
+
+        root_part = step['root-part']
+        root_dev = state.parts[root_part]
+
+        image_dev = self.get_image_loop_device(root_dev)
+
+        self.bind_mount_many(chroot, ['/dev', '/proc', '/sys'], state)
+        self.install_package(chroot, grub_package)
+
+        kernel_params = [
+            'biosdevname=0',
+            'net.ifnames=0',
+            'consoleblank=0',
+            'systemd.show_status=true',
+        ]
+        self.set_grub_cmdline_config(chroot, kernel_params)
+
+        self.chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
+        self.chroot(
+            chroot, [
+                'grub-install',
+                '--target=' + grub_target,
+                '--no-nvram',
+                '--force-extra-removable',
+                '--no-floppy',
+                '--modules=part_msdos part_gpt',
+                '--grub-mkdevicemap=/boot/grub/device.map',
+                image_dev,
+            ]
+        )
+
+        self.unmount(state)
+
     def teardown(self, step, settings, state):
         self.unmount(state)
 
@@ -150,7 +199,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         mounts.reverse()
         while mounts:
             mount_point = mounts.pop()
-            cliapp.runcmd(['umount', mount_point])
+            vmdb.runcmd(['umount', mount_point])
 
     def get_image_loop_device(self, partition_device):
         # We get /dev/mappers/loopXpY and return /dev/loopX
@@ -174,7 +223,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         if mount_opts is None:
             mount_opts = []
 
-        cliapp.runcmd(['mount'] + mount_opts + [path, chroot_path])
+        vmdb.runcmd(['mount'] + mount_opts + [path, chroot_path])
 
         binds = getattr(state, 'grub_mounts', None)
         if binds is None:
@@ -186,12 +235,16 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         return os.path.normpath(os.path.join(chroot, '.' + path))
 
     def install_package(self, chroot, package):
+        vmdb.progress('Install {} in chroot {}'.format(package, chroot))
+        env = os.environ.copy()
+        env['DEBIAN_FRONTEND'] = 'noninteractive'
         self.chroot(
             chroot, 
-            ['apt-get', '-y', '--no-show-progress', 'install', package])
+            ['apt-get', '-y', '--no-show-progress', 'install', package],
+            env=env)
 
     def chroot(self, chroot, argv, **kwargs):
-        return cliapp.runcmd(['chroot', chroot] + argv, **kwargs)
+        return vmdb.runcmd(['chroot', chroot] + argv, **kwargs)
 
     def set_grub_cmdline_config(self, chroot, kernel_params):
         param_string = ' '.join(kernel_params)
