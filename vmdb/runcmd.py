@@ -17,6 +17,7 @@
 
 
 import logging
+import os
 import sys
 
 import cliapp
@@ -46,6 +47,9 @@ def runcmd(argv, *argvs, **kwargs):
     progress('Exec: %r' % (argv,))
     kwargs['stdout_callback'] = _log_stdout
     kwargs['stderr_callback'] = _log_stderr
+    env = kwargs.get('env', os.environ.copy())
+    env['LC_ALL'] = 'C'
+    kwargs['env'] = env
     return cliapp.runcmd(argv, *argvs, **kwargs)
 
 
