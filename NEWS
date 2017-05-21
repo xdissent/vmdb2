@@ -4,6 +4,8 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.2+git, not yet released
 ---------------------------------
 
+* Some prettification of progress reporting, plus progress reports are
+  no longer logged as errors.
 
 Version 0.2, released 2017-05-14
 ---------------------------------

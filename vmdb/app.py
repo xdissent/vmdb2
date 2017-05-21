@@ -76,7 +76,7 @@ class Vmdb2(cliapp.Application):
         return progress
 
     def load_spec_file(self, filename):
-        vmdb.progress('Load spec file {}\n'.format(filename))
+        vmdb.progress('Load spec file {}'.format(filename))
         with open(filename) as f:
             return yaml.safe_load(f)
 
@@ -104,8 +104,7 @@ class Vmdb2(cliapp.Application):
                 self.progress['curstep'] = self.format_step(runner, step)
                 method(expanded_step, self.settings, state)
             except Exception as e:
-                logging.error('ERROR: %s', str(e), exc_info=True)
-                self.progress.error('ERROR: {}\n'.format(str(e)))
+                self.error(str(e))
                 core_meltdown = True
                 if not keep_going:
                     break

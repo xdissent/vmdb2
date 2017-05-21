@@ -51,7 +51,7 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         mount_point = tempfile.mkdtemp()
 
         vmdb.progress(
-            'Mounting {} ({}) on {}\n'.format(device, fs_tag, mount_point))
+            'Mounting {} ({}) on {}'.format(device, fs_tag, mount_point))
         vmdb.runcmd(['mount', device, mount_point])
         state.mounts[fs_tag] = mount_point
 
@@ -62,6 +62,6 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         mount_point = state.mounts[fs_tag]
         
         vmdb.progress(
-            'Unmounting {} ({}) from {}\n'.format(mount_point, fs_tag, device))
+            'Unmounting {} ({}) from {}'.format(mount_point, fs_tag, device))
         vmdb.runcmd(['umount', mount_point])
         os.rmdir(mount_point)

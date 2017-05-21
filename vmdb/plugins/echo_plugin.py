@@ -38,10 +38,10 @@ class EchoStepRunner(vmdb.StepRunnerInterface):
 
     def run(self, step, settings, state):
         text = step['echo']
-        vmdb.progress('{}\n'.format(text))
+        vmdb.progress('{}'.format(text))
 
     def teardown(self, step, settings, state):
         if 'teardown' in step:
             text = step['teardown']
-            vmdb.progress('{}\n'.format(text))
+            vmdb.progress('{}'.format(text))
             logging.info('%s', text)

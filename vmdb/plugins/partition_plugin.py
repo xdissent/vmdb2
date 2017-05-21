@@ -42,7 +42,7 @@ class MklabelStepRunner(vmdb.StepRunnerInterface):
         label_type = step['mklabel']
         device = step['device']
         vmdb.progress(
-            'Creating partition table ({}) on {}\n'.format(label_type, device))
+            'Creating partition table ({}) on {}'.format(label_type, device))
         vmdb.runcmd(['parted', device, 'mklabel', label_type])
         state.parts = {}
 
@@ -60,7 +60,7 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         part_tag = step['part-tag']
 
         vmdb.progress(
-            'Creating partition ({}) on {} ({} to {})\n'.format(
+            'Creating partition ({}) on {} ({} to {})'.format(
                 part_type, device, start, end))
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
 
@@ -81,5 +81,5 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
     def teardown(self, step, settings, state):
         device = step['device']
         vmdb.progress(
-            'Undoing loopback devices for partitions on {}\n'.format(device))
+            'Undoing loopback devices for partitions on {}'.format(device))
         vmdb.runcmd(['kpartx', '-dsv', device])

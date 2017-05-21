@@ -44,7 +44,7 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]
         vmdb.progress(
-            'Install package {} to filesystem at {} ({})\n'.format(
+            'Install package {} to filesystem at {} ({})'.format(
                 package, mount_point, fstag))
         vmdb.runcmd(
             ['chroot', mount_point,

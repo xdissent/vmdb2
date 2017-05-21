@@ -33,14 +33,18 @@ def set_runcmd_progress(progress, verbose):
     _verbose = verbose
 
 
+def error(msg):
+    logging.error(msg, exc_info=True)
+    _progress['current'] = msg
+    if _verbose:
+        _progress.error(msg)
+    
+
 def progress(msg):
-    logging.error(repr(msg))
     logging.info(msg)
     _progress['current'] = msg
     if _verbose:
-        sys.stdout.write(msg)
-        if not msg.endswith('\n'):
-            sys.stdout.write('\n')
+        _progress.notify(msg)
 
 
 def runcmd(argv, *argvs, **kwargs):
