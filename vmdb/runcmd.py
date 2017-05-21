@@ -23,28 +23,24 @@ import sys
 import cliapp
 
 
-_progress = None
 _verbose = False
 
 
-def set_runcmd_progress(progress, verbose):
-    global _progress, _verbose
-    _progress = progress
+def set_verbose_progress(verbose):
+    global _verbose
     _verbose = verbose
 
 
 def error(msg):
     logging.error(msg, exc_info=True)
-    _progress['current'] = msg
     if _verbose:
-        _progress.error(msg)
-    
+        sys.stderr.write('ERROR: {}\n'.format(msg))
+
 
 def progress(msg):
     logging.info(msg)
-    _progress['current'] = msg
     if _verbose:
-        _progress.notify(msg)
+        sys.stdout.write('{}\n'.format(msg))
 
 
 def runcmd(argv, *argvs, **kwargs):

@@ -37,8 +37,12 @@ class ErrorStepRunner(vmdb.StepRunnerInterface):
         return ['error', 'teardown']
 
     def run(self, step, settings, state):
-        vmdb.error('{}'.format(step['error']))
+        # We use vmdb.progress here to get output to go to stdout,
+        # instead of stderr. We want that for tests.
+        vmdb.progress('{}'.format(step['error']))
         raise vmdb.StepError('an error occurred')
 
     def teardown(self, step, settings, state):
-        vmdb.error('{}'.format(step['teardown']))
+        # We use vmdb.progress here to get output to go to stdout,
+        # instead of stderr. We want that for tests.
+        vmdb.progress('{}'.format(step['teardown']))

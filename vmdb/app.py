@@ -21,7 +21,6 @@ import sys
 
 import cliapp
 import jinja2
-import ttystatus
 import yaml
 
 import vmdb
@@ -43,7 +42,7 @@ class Vmdb2(cliapp.Application):
         self.step_runners = vmdb.StepRunnerList()
 
     def process_args(self, args):
-        self.progress = self.create_progress()
+        vmdb.set_verbose_progress(self.settings['verbose'])
 
         spec = self.load_spec_file(args[0])
 
@@ -54,26 +53,15 @@ class Vmdb2(cliapp.Application):
 
         state = vmdb.State()
         steps_taken, core_meltdown = self.run_steps(steps, state)
-        self.progress.clear()
-        self.progress = self.create_progress()
         if core_meltdown:
             vmdb.progress('Something went wrong, cleaning up!')
         else:
             vmdb.progress('All went fine, cleaning up.')
         self.run_teardowns(steps_taken, state)
 
-        self.progress.finish()
-
         if core_meltdown:
             logging.error('An error occurred, exiting with non-zero exit code')
             sys.exit(1)
-
-    def create_progress(self):
-        progress = ttystatus.TerminalStatus(period=0)
-        progress.format(
-            '%ElapsedTime() Step %Index(step,steps): %String(current)')
-        vmdb.set_runcmd_progress(progress, self.settings['verbose'])
-        return progress
 
     def load_spec_file(self, filename):
         vmdb.progress('Load spec file {}'.format(filename))
@@ -92,7 +80,6 @@ class Vmdb2(cliapp.Application):
         core_meltdown = False
         steps_taken = []
 
-        self.progress['steps'] = steps
         for step in steps:
             try:
                 logging.info(msg, step)
@@ -100,11 +87,9 @@ class Vmdb2(cliapp.Application):
                 expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
                 method = getattr(runner, method_name)
-                self.progress['step'] = step
-                self.progress['curstep'] = self.format_step(runner, step)
                 method(expanded_step, self.settings, state)
             except Exception as e:
-                self.error(str(e))
+                vmdb.error(str(e))
                 core_meltdown = True
                 if not keep_going:
                     break
