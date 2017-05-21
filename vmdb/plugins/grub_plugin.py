@@ -103,57 +103,23 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             raise Exception('Unknown GRUB flavor {}'.format(flavor))
 
     def install_uefi(self, step, settings, state):
+        vmdb.progress('Installing GRUB for UEFI')
+
+        if not 'efi-part' in step:
+            raise Exception('"efi-part" is required in UEFI GRUB installtion')
+
         grub_package = 'grub-efi-amd64'
         grub_target = 'x86_64-efi'
-
-        device = step['device']
-
-        rootfs = step['root-fs']
-        chroot = state.mounts[rootfs]
-
-        root_part = step['root-part']
-        root_dev = state.parts[root_part]
-
-        efi_part = step['efi-part']
-        efi_dev = state.parts[efi_part]
-
-        image_dev = self.get_image_loop_device(root_dev)
-
-        self.bind_mount_many(chroot, ['/dev', '/proc', '/sys'], state)
-        self.mount(chroot, efi_dev, '/boot/efi', state)
-
-        self.install_package(chroot, grub_package)
-
-        kernel_params = [
-            'biosdevname=0',
-            'net.ifnames=0',
-            'consoleblank=0',
-            'systemd.show_status=true',
-        ]
-        self.set_grub_cmdline_config(chroot, kernel_params)
-
-        self.chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
-        self.chroot(
-            chroot, [
-                'grub-install',
-                '--target=' + grub_target,
-                '--no-nvram',
-                '--force-extra-removable',
-                '--no-floppy',
-                '--modules=part_msdos part_gpt',
-                '--grub-mkdevicemap=/boot/grub/device.map',
-                image_dev,
-            ]
-        )
-
-        self.unmount(state)
+        self.install_grub(step, settings, state, grub_package, grub_target)
 
     def install_bios(self, step, settings, state):
         vmdb.progress('Installing GRUB for BIOS')
 
         grub_package = 'grub-pc'
         grub_target = 'i386-pc'
+        self.install_grub(step, settings, state, grub_package, grub_target)
 
+    def install_grub(self, step, settings, state, grub_package, grub_target):
         device = step['device']
 
         rootfs = step['root-fs']
@@ -164,7 +130,15 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
         image_dev = self.get_image_loop_device(root_dev)
 
+        if 'efi-part' in step:
+            efi_part = step['efi-part']
+            efi_dev = state.parts[efi_part]
+        else:
+            efi_dev = None
+
         self.bind_mount_many(chroot, ['/dev', '/proc', '/sys'], state)
+        if efi_dev:
+            self.mount(chroot, efi_dev, '/boot/efi', state)
         self.install_package(chroot, grub_package)
 
         kernel_params = [
