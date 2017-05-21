@@ -50,7 +50,7 @@ class MakeCacheStepRunner(vmdb.StepRunnerInterface):
         if not os.path.exists(tar_path):
             vmdb.progress(
                 'Caching contents of {} to {}'.format(rootdir, tar_path))
-            cliapp.runcmd(['tar', '-C', rootdir, '-caf', tar_path, '.'])
+            vmdb.runcmd(['tar', '-C', rootdir, '-caf', tar_path, '.'])
         
 
 class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
@@ -65,6 +65,6 @@ class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
         if os.path.exists(tar_path):
             vmdb.progress(
                 'Unpacking rootfs from {} to {}'.format(tar_path, rootdir))
-            cliapp.runcmd(
+            vmdb.runcmd(
                 ['tar', '-C', rootdir, '-xf', tar_path, '--numeric-owner'])
             state.rootfs_unpacked = True
