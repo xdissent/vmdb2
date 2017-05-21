@@ -3,4 +3,3 @@
 import vmdb
 
 vmdb.Vmdb2(version=vmdb.__version__).run()
-
