@@ -4,8 +4,10 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.2+git, not yet released
 ---------------------------------
 
-* Some prettification of progress reporting, plus progress reports are
-  no longer logged as errors.
+* Simplify progress reporting to go to stdout, plus stop logging
+  progress reports ar as errors.
+
+* Add a BIOS flavor for installing GRUB.
 
 Version 0.2, released 2017-05-14
 ---------------------------------
