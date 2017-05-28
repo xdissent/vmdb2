@@ -31,6 +31,11 @@ steps:
   - cache-rootfs: root-fs
     unless: rootfs_unpacked
 
+  - chroot: root-fs
+    shell: |
+      sed -i '/^root:[^:]*:/s//root::/' /etc/passwd
+      echo pc-vmdb2 > /etc/hostname
+
   - grub: bios
     root-fs: root-fs
     root-part: root-part
