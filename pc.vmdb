@@ -40,3 +40,4 @@ steps:
     root-fs: root-fs
     root-part: root-part
     device: "{{ output }}"
+    console: serial

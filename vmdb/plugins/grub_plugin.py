@@ -121,6 +121,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
     def install_grub(self, step, settings, state, grub_package, grub_target):
         device = step['device']
+        console = step.get('console', None)
 
         rootfs = step['root-fs']
         chroot = state.mounts[rootfs]
@@ -147,7 +148,19 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             'consoleblank=0',
             'systemd.show_status=true',
         ]
+        if console == 'serial':
+            kernel_params.extend([
+                'quiet',
+                'loglevel=3',
+                'rd.systemd.show_status=false',
+                'systemd.show_status=false',
+                'console=tty0',
+                'console=ttyS0,115200n8',
+            ])
+
         self.set_grub_cmdline_config(chroot, kernel_params)
+        if console == 'serial':
+            self.add_grub_serial_console(chroot)
 
         self.chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
         self.chroot(
@@ -235,3 +248,11 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
         with open(filename, 'w') as f:
             f.write('\n'.join(lines) + '\n')
+
+    def add_grub_serial_console(self, chroot):
+        filename = self.chroot_path(chroot, '/etc/default/grub')
+
+        with open(filename, 'a') as f:
+            f.write('GRUB_TERMINAL=serial\n')
+            f.write('GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 '
+                    '--word=8 --parity=no --stop=1"\n')
