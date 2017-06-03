@@ -1,3 +1,6 @@
+# This is a sample VMDB2 input file to specify a simple
+# system that boots on a PC with BIOS.
+
 steps:
   - mkimg: "{{ output }}"
     size: 4G
@@ -40,4 +43,3 @@ steps:
     root-fs: root-fs
     root-part: root-part
     device: "{{ output }}"
-    console: serial
