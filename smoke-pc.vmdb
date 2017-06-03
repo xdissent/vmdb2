@@ -1,0 +1,43 @@
+steps:
+  - mkimg: "{{ output }}"
+    size: 4G
+
+  - mklabel: msdos
+    device: "{{ output }}"
+
+  - mkpart: primary
+    device: "{{ output }}"
+    start: 0%
+    end: 100%
+    part-tag: root-part
+
+  - mkfs: ext4
+    partition: root-part
+
+  - mount: root-part
+    fs-tag: root-fs
+
+  - unpack-rootfs: root-fs
+
+  - debootstrap: stretch
+    mirror: http://http.debian.net/debian
+    target: root-fs
+    unless: rootfs_unpacked
+
+  - apt: linux-image-amd64
+    fs-tag: root-fs
+    unless: rootfs_unpacked
+
+  - cache-rootfs: root-fs
+    unless: rootfs_unpacked
+
+  - chroot: root-fs
+    shell: |
+      sed -i '/^root:[^:]*:/s//root::/' /etc/passwd
+      echo pc-vmdb2 > /etc/hostname
+
+  - grub: bios
+    root-fs: root-fs
+    root-part: root-part
+    device: "{{ output }}"
+    console: serial
