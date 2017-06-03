@@ -31,17 +31,15 @@ steps:
     fs-tag: root-fs
     unless: rootfs_unpacked
 
+  - apt: python
+    fs-tag: root-fs
+    unless: rootfs_unpacked
+
   - cache-rootfs: root-fs
     unless: rootfs_unpacked
 
-  - chroot: root-fs
-    shell: |
-      apt -y install python
-
-  - shell: |
-      printf '[pc]\n%s hostname=pc\n' "$ROOT" > pc.inventory
-      ansible-playbook -i pc.inventory -c chroot pc.yml
-    root-fs: root-fs
+  - ansible: root-fs
+    playbook: ansible.yml
 
   - grub: bios
     root-fs: root-fs

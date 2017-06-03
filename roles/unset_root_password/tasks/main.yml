@@ -1,0 +1,3 @@
+- name: unset root password
+  shell: |
+    sed -i '/^root:[^:]*:/s//root::/' /etc/passwd

@@ -4,6 +4,14 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.3+git, not yet released
 ---------------------------------
 
+* Add a rudimenteary smoke test yarn for vmdb2-built images.
+
+* Add a plugin to run Ansible to configure an image at build time.
+  Doing this via Ansible saves me from having to write equivalent
+  functionality directly into vmdb2, which would be quite a lot of
+  work. (If someone wants puppet, a plugin for that is probably easily
+  doable, assuming it can run against a chroot. I don't now, I've
+  never used puppet.)
 
 Version 0.3, released 2017-05-21
 ---------------------------------

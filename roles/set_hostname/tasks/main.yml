@@ -1,0 +1,3 @@
+- name: set /etc/hostname
+  shell: |
+    echo "{{ hostname }}" > /etc/hostname
