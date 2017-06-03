@@ -1,7 +1,7 @@
 NEWS for vmdb2, the Debian disk image builder
 =============================================================================
 
-Version 0.3+git, not yet released
+Version 0.4, released 2017-06-03
 ---------------------------------
 
 * Add a rudimenteary smoke test yarn for vmdb2-built images.
