@@ -1,0 +1,7 @@
+- hosts: image
+  roles:
+    - set_hostname
+    - unset_root_password
+  vars:
+    hostname: pc
+
