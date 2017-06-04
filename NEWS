@@ -4,6 +4,11 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.4+git, not yet released
 ---------------------------------
 
+* The "unless:" part of vmdb spec files now actually works. Previously
+  it was entrely unimplmented (there was code to implement the check,
+  but it was never actually called). The apt and debootstrap plugins
+  have been fixed to not do "has rootfs tarball been unpacked" checks
+  themselves.
 
 Version 0.4, released 2017-06-03
 ---------------------------------
