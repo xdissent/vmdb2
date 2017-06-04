@@ -86,8 +86,11 @@ class Vmdb2(cliapp.Application):
                 steps_taken.append(step)
                 expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
-                method = getattr(runner, method_name)
-                method(expanded_step, self.settings, state)
+                if runner.skip(step, self.settings, state):
+                    logging.info('Skipping as requested')
+                else:
+                    method = getattr(runner, method_name)
+                    method(expanded_step, self.settings, state)
             except Exception as e:
                 vmdb.error(str(e))
                 core_meltdown = True
