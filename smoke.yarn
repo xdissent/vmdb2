@@ -14,6 +14,7 @@ build an image as root), and you need to run on an amd64 system (and
 thus build an amd64 image). Additionally, you need to add the folloing
 option to yarn:
 
+    EXAMPLE
     --env ROOTFS_TARBALL=/path/to/rootfs/tarball
 
 This means vmdb2 will use the given tarball when creating an image,
@@ -27,7 +28,8 @@ testing multiple time much faster.
     IMPLEMENTS WHEN user runs vmdb (\S+) --output (\S+)
     "$SRCDIR/vmdb2" --no-default-config "$SRCDIR/$MATCH_1" \
         --output "$DATADIR/$MATCH_2" \
-        --log vmdb.log \
+        --log "$DATADIR/vmdb.log" \
+        --verbose \
         --rootfs-tarball "$ROOTFS_TARBALL"
 
     IMPLEMENTS THEN user can boot (\S+) and power it off from root shell
