@@ -70,7 +70,7 @@ setup(
     author_email='liw@liw.fi',
     url='http://liw.fi/vmdebootstrap/',
     scripts=['vmdb2'],
-    packages=['vmdb'],
+    packages=['vmdb', 'vmdb.plugins'],
     data_files=[('share/man/man1', glob.glob('*.1'))],
     cmdclass={
         'build': Build,
