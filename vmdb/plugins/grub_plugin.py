@@ -147,6 +147,9 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             'net.ifnames=0',
             'consoleblank=0',
             'systemd.show_status=true',
+            'rw',
+            'quiet',
+            'systemd.show_status=false',
         ]
         if console == 'serial':
             kernel_params.extend([
