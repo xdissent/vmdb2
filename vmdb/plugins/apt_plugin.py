@@ -18,6 +18,7 @@
 
 
 import logging
+import os
 import sys
 
 import cliapp
@@ -40,9 +41,14 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         package = step['apt']
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]
+
+        env = os.environ.copy()
+        env['DEBIAN_FRONTEND'] = 'noninteractive'
+
         vmdb.progress(
             'Install package {} to filesystem at {} ({})'.format(
                 package, mount_point, fstag))
         vmdb.runcmd(
             ['chroot', mount_point,
-             'apt-get', '-y', '--no-show-progress', 'install', package])
+             'apt-get', '-y', '--no-show-progress', 'install', package],
+            env=env)
