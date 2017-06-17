@@ -17,9 +17,7 @@
 
 
 
-import logging
 import os
-import sys
 
 import cliapp
 
@@ -42,13 +40,20 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]
 
+        if not self.got_eatmydata(state):
+            self.install_package(mount_point, [], 'eatmydata')
+            state.got_eatmydata = True
+        self.install_package(mount_point, ['eatmydata'], package)
+
+    def got_eatmydata(self, state):
+        return hasattr(state, 'got_eatmydata') and getattr(state, 'got_eatmydata')
+
+    def install_package(self, mount_point, argv_prefix, package):
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
 
-        vmdb.progress(
-            'Install package {} to filesystem at {} ({})'.format(
-                package, mount_point, fstag))
         vmdb.runcmd(
-            ['chroot', mount_point,
-             'apt-get', '-y', '--no-show-progress', 'install', package],
+            ['chroot', mount_point] +
+            argv_prefix +
+            ['apt-get', '-y', '--no-show-progress', 'install', package],
             env=env)
