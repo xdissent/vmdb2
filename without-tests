@@ -18,3 +18,4 @@ vmdb/plugins/mkimg_plugin.py
 vmdb/plugins/mount_plugin.py
 vmdb/plugins/partition_plugin.py
 vmdb/plugins/rootfs_cache_plugin.py
+vmdb/plugins/virtuals_plugin.py
