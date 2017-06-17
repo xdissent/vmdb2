@@ -17,9 +17,7 @@
 
 
 
-import logging
 import os
-import sys
 
 import cliapp
 
@@ -36,7 +34,7 @@ class RootFSCachePlugin(cliapp.Plugin):
 
         self.app.step_runners.add(MakeCacheStepRunner())
         self.app.step_runners.add(UnpackCacheStepRunner())
-        
+
 
 class MakeCacheStepRunner(vmdb.StepRunnerInterface):
 
@@ -51,7 +49,7 @@ class MakeCacheStepRunner(vmdb.StepRunnerInterface):
             vmdb.progress(
                 'Caching contents of {} to {}'.format(rootdir, tar_path))
             vmdb.runcmd(['tar', '-C', rootdir, '-caf', tar_path, '.'])
-        
+
 
 class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
 

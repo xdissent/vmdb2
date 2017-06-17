@@ -17,9 +17,6 @@
 
 
 
-import logging
-import sys
-
 import cliapp
 
 import vmdb
@@ -29,7 +26,7 @@ class DebootstrapPlugin(cliapp.Plugin):
 
     def enable(self):
         self.app.step_runners.add(DebootstrapStepRunner())
-        
+
 
 class DebootstrapStepRunner(vmdb.StepRunnerInterface):
 

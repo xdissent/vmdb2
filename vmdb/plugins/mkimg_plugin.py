@@ -17,9 +17,6 @@
 
 
 
-import logging
-import sys
-
 import cliapp
 
 import vmdb
@@ -33,7 +30,7 @@ class MkimgPlugin(cliapp.Plugin):
             ['size'],
             'size of output image',
             default='1GiB')
-        
+
 
 class MkimgStepRunner(vmdb.StepRunnerInterface):
 

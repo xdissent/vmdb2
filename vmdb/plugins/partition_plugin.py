@@ -17,10 +17,6 @@
 
 
 
-import logging
-import os
-import sys
-
 import cliapp
 
 import vmdb
@@ -31,7 +27,7 @@ class PartitionPlugin(cliapp.Plugin):
     def enable(self):
         self.app.step_runners.add(MklabelStepRunner())
         self.app.step_runners.add(MkpartStepRunner())
-        
+
 
 class MklabelStepRunner(vmdb.StepRunnerInterface):
 

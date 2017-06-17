@@ -17,7 +17,6 @@
 
 
 
-import logging
 import os
 import tempfile
 
@@ -45,7 +44,7 @@ class AnsibleStepRunner(vmdb.StepRunnerInterface):
         vmdb.progress(
             'Running ansible playbook {} on filesystem at {} ({})'.format(
                 playbook, mount_point, fstag))
-        
+
         state.ansible_inventory = self.create_inventory(mount_point)
         vmdb.progress(
             'Created {} for Ansible inventory'.format(state.ansible_inventory))

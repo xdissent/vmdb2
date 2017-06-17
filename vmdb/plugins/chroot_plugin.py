@@ -17,9 +17,7 @@
 
 
 
-import logging
 import os
-import sys
 
 import cliapp
 
@@ -31,7 +29,7 @@ class ChrootPlugin(cliapp.Plugin):
     def enable(self):
         self.app.step_runners.add(ChrootStepRunner())
         self.app.step_runners.add(ShellStepRunner())
-        
+
 
 class ChrootStepRunner(vmdb.StepRunnerInterface):
 
@@ -47,7 +45,7 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
         vmdb.progress(
             'chroot {} to {}'.format(mount_point, ' '.join(shell.split('\n'))))
         vmdb.runcmd(['chroot', mount_point, 'sh', '-c', shell])
-        
+
 
 class ShellStepRunner(vmdb.StepRunnerInterface):
 

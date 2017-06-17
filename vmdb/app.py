@@ -91,7 +91,7 @@ class Vmdb2(cliapp.Application):
                 else:
                     method = getattr(runner, method_name)
                     method(expanded_step, self.settings, state)
-            except Exception as e:
+            except BaseException as e:
                 vmdb.error(str(e))
                 core_meltdown = True
                 if not keep_going:

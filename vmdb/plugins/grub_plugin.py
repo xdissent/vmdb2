@@ -72,10 +72,8 @@
 # The grub step will take of the rest.
 
 
-import logging
 import os
 import re
-import sys
 
 import cliapp
 
@@ -120,7 +118,6 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         self.install_grub(step, settings, state, grub_package, grub_target)
 
     def install_grub(self, step, settings, state, grub_package, grub_target):
-        device = step['device']
         console = step.get('console', None)
 
         rootfs = step['root-fs']
@@ -195,7 +192,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         # We get /dev/mappers/loopXpY and return /dev/loopX
         assert partition_device.startswith('/dev/mapper/loop')
 
-        m = re.match('^/dev/mapper/(?P<loop>loop\d+)p\d+$', partition_device)
+        m = re.match(r'^/dev/mapper/(?P<loop>loop\d+)p\d+$', partition_device)
         assert m is not None
 
         loop = m.group('loop')
@@ -229,7 +226,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
         self.chroot(
-            chroot, 
+            chroot,
             ['apt-get', '-y', '--no-show-progress', 'install', package],
             env=env)
 

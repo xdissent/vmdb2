@@ -81,4 +81,4 @@ class NoMatchingRunner(cliapp.AppException):
     def __init__(self, keys):
         super(NoMatchingRunner, self).__init__(
             'No runner implements step with keys {}'.format(
-            ', '.join(keys)))
+                ', '.join(keys)))

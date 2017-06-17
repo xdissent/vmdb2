@@ -18,7 +18,6 @@
 
 
 import logging
-import sys
 
 import cliapp
 
@@ -29,7 +28,7 @@ class EchoPlugin(cliapp.Plugin):
 
     def enable(self):
         self.app.step_runners.add(EchoStepRunner())
-        
+
 
 class EchoStepRunner(vmdb.StepRunnerInterface):
 

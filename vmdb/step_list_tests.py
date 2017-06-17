@@ -37,7 +37,7 @@ class StepRunnerListTests(unittest.TestCase):
         steps = vmdb.StepRunnerList()
         runner = DummyStepRunner()
         steps.add(runner)
-        found = steps.find({ 'foo': None, 'bar': None })
+        found = steps.find({'foo': None, 'bar': None})
         self.assertEqual(runner, found)
 
     def test_raises_error_if_runner_not_found(self):
@@ -45,10 +45,13 @@ class StepRunnerListTests(unittest.TestCase):
         runner = DummyStepRunner()
         steps.add(runner)
         with self.assertRaises(vmdb.NoMatchingRunner):
-            steps.find({ 'foo': None })
+            steps.find({'foo': None})
 
 
 class DummyStepRunner(vmdb.StepRunnerInterface):
+
+    def run(self, *args):
+        pass
 
     def get_required_keys(self):
         return ['foo', 'bar']

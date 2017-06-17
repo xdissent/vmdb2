@@ -19,7 +19,6 @@
 
 import logging
 import os
-import sys
 import tempfile
 
 import cliapp
@@ -31,7 +30,7 @@ class MountPlugin(cliapp.Plugin):
 
     def enable(self):
         self.app.step_runners.add(MountStepRunner())
-        
+
 
 class MountStepRunner(vmdb.StepRunnerInterface):
 
@@ -53,7 +52,7 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         self.mount_virtuals(rootfs, state)
 
     def teardown(self, step, settings, state):
-        self.unmount_virtuals()
+        self.unmount_virtuals(state)
         self.unmount_rootfs(step, settings, state)
 
     def mount_rootfs(self, step, settings, state):
@@ -68,21 +67,15 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         device = state.parts[part_tag]
         mount_point = tempfile.mkdtemp()
 
-        vmdb.progress(
-            'Mounting {} ({}) on {}'.format(device, fs_tag, mount_point))
         vmdb.runcmd(['mount', device, mount_point])
         state.mounts[fs_tag] = mount_point
 
         return mount_point
 
     def unmount_rootfs(self, step, settings, state):
-        part_tag = step['mount']
-        device = state.parts[part_tag]
         fs_tag = step['fs-tag']
         mount_point = state.mounts[fs_tag]
-        
-        vmdb.progress(
-            'Unmounting {} ({}) from {}'.format(mount_point, fs_tag, device))
+
         vmdb.runcmd(['umount', mount_point])
         os.rmdir(mount_point)
 
@@ -92,19 +85,15 @@ class MountStepRunner(vmdb.StepRunnerInterface):
 
         for device, mount_point, fstype in self.virtuals:
             path = os.path.join(rootfs, './' + mount_point)
-            vmdb.progress(
-                'Mounting virtual {} ({}) on {}'.format(device, fstype, path))
             if not os.path.exists(path):
                 os.mkdir(path)
             vmdb.runcmd(['mount', '-t', fstype, device, path])
             state.virtuals.append(path)
         logging.debug('mounted virtuals: %r', state.virtuals)
 
-    def unmount_virtuals(self):
+    def unmount_virtuals(self, state):
         logging.debug('unmounting virtuals: %r', state.virtuals)
         for mount_point in reversed(state.virtuals):
-            vmdb.progress(
-                'Unmounting virtual {}'.format(mount_point))
             try:
                 vmdb.runcmd(['umount', mount_point])
             except cliapp.AppException:
