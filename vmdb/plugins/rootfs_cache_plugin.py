@@ -48,7 +48,8 @@ class MakeCacheStepRunner(vmdb.StepRunnerInterface):
         if not os.path.exists(tar_path):
             vmdb.progress(
                 'Caching contents of {} to {}'.format(rootdir, tar_path))
-            vmdb.runcmd(['tar', '-C', rootdir, '-caf', tar_path, '.'])
+            vmdb.runcmd(['tar', '-C', rootdir, '--one-file-system',
+                         '-caf', tar_path, '.'])
 
 
 class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
