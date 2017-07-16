@@ -32,6 +32,8 @@ of guilt of making something as awful as vmdebootstrap.)
 [vmdebootstrap]: http://liw.fi/vmdebootstrap/
 [debootstrap]: https://packages.debian.org/unstable/debootstrap
 
+If you want to use pull requests, use the repository in GitHub.
+
 
 Getting vmdb2
 -----------------------------------------------------------------------------
