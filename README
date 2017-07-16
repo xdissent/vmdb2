@@ -1,4 +1,4 @@
-README for vmdb2 or vmdebootstrap 2nd generation
+README for vmdb2 or vmdebootstrap 2nd generation     ; -*- mode: markdown;-*-
 =============================================================================
 
 vmdb2 is a program for producing a disk image with Debian installed.
