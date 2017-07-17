@@ -47,4 +47,3 @@ steps:
     root-fs: root-fs
     root-part: root-part
     efi-part: efi-part
-    device: "{{ output }}"

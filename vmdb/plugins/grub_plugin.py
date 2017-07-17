@@ -60,14 +60,13 @@
 # root filesystem. Then install grub with a step like this:
 #
 #         - grub: uefi
-#           device: "{{ output }}"
 #           root-fs: root-fs
 #           root-part: root-part
 #           efi-part: efi-part
 #
-# Here: device specifies the output image, root-fs is the tag for the
-# root filesystem, root-part is the tag for the partition with the
-# root filesystem, and efi-part is tag for the EFI partition.
+# Here: root-fs is the tag for the root filesystem, root-part is the
+# tag for the partition with the root filesystem, and efi-part is tag
+# for the EFI partition.
 #
 # The grub step will take of the rest.
 
