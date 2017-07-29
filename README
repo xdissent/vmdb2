@@ -46,6 +46,21 @@ repositories:
 
 Use either repository as you wish.
 
+Requirements:
+
+The following tools are used by vmdb2 (Debian package names in brackets).
+
+* `kpartx` [kpartx, mkpart command]
+* `parted` [`parted`, mklabel command]
+* `qemu-img` [`qemu-utils`, mkimg command]
+* `qemu-user-static` [`qemu-debootstrap`, qemu-debootstrap command]
+
+The following Python modules are used by vmdb2 (Debian package names in brackets).
+
+* cliapp [`python-cliapp`]
+* jinja2 [`python-jinja2`]
+* yaml [`python-yaml`]
+
 
 Dependencies for smoke.sh
 -----------------------------------------------------------------------------
