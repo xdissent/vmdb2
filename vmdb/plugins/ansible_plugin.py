@@ -48,9 +48,13 @@ class AnsibleStepRunner(vmdb.StepRunnerInterface):
         state.ansible_inventory = self.create_inventory(mount_point)
         vmdb.progress(
             'Created {} for Ansible inventory'.format(state.ansible_inventory))
+
+        env = dict(os.environ)
+        env['ANSIBLE_NOCOWS'] = '1'
         vmdb.runcmd(
             ['ansible-playbook', '-c', 'chroot',
-             '-i', state.ansible_inventory, playbook])
+             '-i', state.ansible_inventory, playbook],
+            env=env)
 
     def teardown(self, step, settings, state):
         if hasattr(state, 'ansible_inventory'):
