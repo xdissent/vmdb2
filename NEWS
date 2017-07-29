@@ -4,6 +4,11 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.7+git, not yet released
 ---------------------------------
 
+* The `mount` plugin can now specify a mount point on an already
+  mounted filesystem, such as /boot inside the root filesystem already
+  mounted. This allows constructing a system with a separate /boot
+  partition. Thanks to Stuart Prescott for reporting the lack of this
+  feature.
 
 Version 0.7, released 2017-06-18
 ---------------------------------
