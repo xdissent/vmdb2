@@ -48,11 +48,28 @@ class MountStepRunner(vmdb.StepRunnerInterface):
 
         part_tag = step['mount']
         fs_tag = step['fs-tag']
+        dirname = step.get('dirname')
+        mount_on = step.get('mount-on')
+
         if fs_tag in state.mounts:
             raise Exception('fs-tag {} already used'.format(fs_tag))
 
+        if dirname:
+            if not mount_on:
+                raise Exception('no mount-on tag given')
+
+            if mount_on not in state.mounts:
+                raise Exception('cannot find tag {}'.format(mount_on))
+
+            mount_point = os.path.join(
+                state.mounts[mount_on], './' + step['dirname'])
+
+            if not os.path.exists(mount_point):
+                os.makedirs(mount_point)
+        else:
+            mount_point = tempfile.mkdtemp()
+
         device = state.parts[part_tag]
-        mount_point = tempfile.mkdtemp()
 
         vmdb.runcmd(['mount', device, mount_point])
         state.mounts[fs_tag] = mount_point
