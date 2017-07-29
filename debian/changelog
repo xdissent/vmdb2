@@ -1,3 +1,9 @@
+vmdb2 (0.8+git-1) UNRELEASED; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 29 Jul 2017 16:58:45 +0300
+
 vmdb2 (0.8-1) unstable; urgency=medium
 
   * New upstream version.
