@@ -17,7 +17,7 @@ vmdb2 is a re-implementation from scratch, without a need for
 backwards compatibility. It aims to provide more flexibility than
 vmdebootstrap, without becoming anywhere near as complicated. Think of
 vmdb2 as "vmdebootstrap the second generation". The name has changed
-to allow the two tools to installable in paralllel, which is important
+to allow the two tools to installable in parallel, which is important
 for a transition period.
 
 The main user-visible difference between vmdebootstrap and vmdb2 is
