@@ -199,12 +199,6 @@ See **cliapp**(5) for more detailed information about configuration
 files. cliapp is a Python library that `vmdb2` uses for command line
 handling, configuration files, and such things.
 
-# A .vmdb2 image specification file
-
-- yaml, jinja2 syntax
-- steps to list what needs to be done to build an image
-- setting jinja2 variables from the command line
-
 # List of available steps and their configuration
 
 - list each step
