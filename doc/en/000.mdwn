@@ -176,6 +176,29 @@ cache tar archive.
 - cliapp config files, ini and yaml, and the fact that a long
   option is always an acceptable variable in a config file
 
+`vmdb2` has a number of command line options. Run `vmdb2 --help` to
+see them all, or look at the manual page (`man vmdb2`).
+
+Each long option (`--output` for example) can be a **configuration
+variable** in a configuration file. The program looks up and reads
+several configration files, such as `~/.config/vmdb2/*.conf` and
+`*.yaml` in the same directory. `.yaml` files use a YAML syntax,
+everything else uses INI file syntax.
+
+Example: Store the following as `~/.config/vmdb2/vmdb2.yaml`:
+
+    config:
+        output: /tmp/vmdb2.img
+        log: /tmp/vmdb2.log
+        rootfs-tarball: /tmp/vmdb2.tar.gz
+
+This is equivalent of running `vmdb2--output=/tmp/vmdb2.img
+--log=/tmp/vmdb2.log --rootfs-tarball=/tmp/vmdb2.tar.gz`.
+
+See **cliapp**(5) for more detailed information about configuration
+files. cliapp is a Python library that `vmdb2` uses for command line
+handling, configuration files, and such things.
+
 # A .vmdb2 image specification file
 
 - yaml, jinja2 syntax
