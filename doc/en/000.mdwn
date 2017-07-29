@@ -1,0 +1,51 @@
+---
+title: Building system images with vmdb2
+author: Lars Wirzenius
+date: work-in-progress
+...
+
+# Introduction
+
+- what is vmdb2 for?
+- how does it differ from other image building tools?
+- especially vmdebootstrap
+
+# Installation
+
+- .deb
+- git clone and run from source tree
+
+# Quick start
+
+- sample .vmdb2
+- command to run vmdb2 and produce an image
+- command to run vm using image
+
+# Configuration
+
+- command line options, list them and give summary of use
+- cliapp config files, ini and yaml, and the fact that a long
+  option is always an acceptable variable in a config file
+
+# A .vmdb2 image specification file
+
+- yaml, jinja2 syntax
+- steps to list what needs to be done to build an image
+- setting jinja2 variables from the command line
+
+# List of available steps and their configuration
+
+- list each step
+- what is the step for? examples of how it could be used
+- what mandatory and optional key/value pairs does it
+  understand? examples of their use
+- the tag concept
+
+# Examples
+
+- various spec files, explained in detail
+- simple image to run under kvm, qemu, or similar, boots with
+  normal grub (bios)
+- same but with uefi boot
+- same but software installed with ansible
+- an LVM enabled image with encrypted / but cleartext /boot
