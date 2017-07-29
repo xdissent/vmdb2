@@ -1,2 +1,2 @@
-__version__ = "0.7+git"
-__version_info__ = (0, 7, '+git')
+__version__ = "0.8"
+__version_info__ = (0, 8)
