@@ -61,7 +61,7 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
 
         vmdb.runcmd(['kpartx', '-dsv', device])
-        output = vmdb.runcmd(['kpartx', '-asv', device])
+        output = vmdb.runcmd(['kpartx', '-asv', device]).decode('UTF-8')
         device_file = None
         for line in output.splitlines():
             words = line.split()

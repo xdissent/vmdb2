@@ -15,6 +15,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+from __future__ import print_function
+
 from distutils.core import setup, Extension
 from distutils.cmd import Command
 from distutils.command.build import build
@@ -35,7 +37,7 @@ class Build(build):
         self.format_yarns()
 
     def build_manpage(self, program, lang):
-        print 'building manpage for %s (lang=%s)' % (program, lang)
+        print('building manpage for %s (lang=%s)' % (program, lang))
         self.generate_troff(program, lang)
         self.format_man_as_txt(program)
 
@@ -58,7 +60,7 @@ class Build(build):
                 env=env)
 
     def format_yarns(self):
-        print 'building yarns'
+        print('building yarns')
         cliapp.runcmd(['make', '-C', 'yarns'])
 
 
