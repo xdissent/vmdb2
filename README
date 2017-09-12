@@ -47,6 +47,25 @@ repositories:
 Use either repository as you wish.
 
 
+Dependencies for smoke.sh
+-----------------------------------------------------------------------------
+
+You probably need the following installed to run the smoke test:
+
+- git
+- python-coverage-test-runner
+- python-cliapp
+- python-jinja2
+- pylint
+- cmdtest 0.31 or later
+- qemu-utils
+- parted
+- kpartx
+- debootstrap
+- expect
+- qemu-system
+
+
 Tutorial
 -----------------------------------------------------------------------------
 
