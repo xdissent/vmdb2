@@ -20,7 +20,7 @@ steps:
   - unpack-rootfs: root-fs
 
   - debootstrap: stretch
-    mirror: http://http.debian.net/debian
+    mirror: http://deb.debian.org/debian
     target: root-fs
     unless: rootfs_unpacked
 

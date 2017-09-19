@@ -18,7 +18,7 @@ steps:
     fs-tag: root-fs
 
   - debootstrap: stretch
-    mirror: http://http.debian.net/debian
+    mirror: http://deb.debian.org/debian
     target: root-fs
 
   - apt: linux-image-amd64
