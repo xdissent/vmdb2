@@ -57,9 +57,9 @@ The following tools are used by vmdb2 (Debian package names in brackets).
 
 The following Python modules are used by vmdb2 (Debian package names in brackets).
 
-* cliapp [`python-cliapp`]
-* jinja2 [`python-jinja2`]
-* yaml [`python-yaml`]
+* cliapp [`python3-cliapp`]
+* jinja2 [`python3-jinja2`]
+* yaml [`python3-yaml`]
 
 
 Dependencies for smoke.sh
@@ -68,10 +68,10 @@ Dependencies for smoke.sh
 You probably need the following installed to run the smoke test:
 
 - git
-- python-coverage-test-runner
-- python-cliapp
-- python-jinja2
-- pylint
+- python3-coverage-test-runner
+- python3-cliapp
+- python3-jinja2
+- pylint3
 - cmdtest 0.31 or later
 - qemu-utils
 - parted
