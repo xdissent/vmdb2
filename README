@@ -87,10 +87,10 @@ Tutorial
 To use vmdb2, git clone the source and at the root of the source tree
 run the following command:
 
-    sudo ./vmdb2 --output simple.img simple.yaml --log simple.log
+    sudo ./vmdb2 --output simple.img simple.vmdb --log simple.log
 
 `--output simple.img` specifies that the output image is called
-`simple.img`, the specification is `simple.yaml` and the log file goes
+`simple.img`, the specification is `simple.vmdb` and the log file goes
 to `simple.log`.
 
 
@@ -124,7 +124,7 @@ steps that will become incomplete as soon as development continues:
 * mkfs (create filesystem in a partition)
 * mount (mount filesystem, teardown unmounts it automatically)
 
-See `simple.yaml` for examples. Note how the file uses Jinja2
+See `simple.vmdb` for examples. Note how the file uses Jinja2
 templating for value fields to get value of `--output` in the right
 places. Also note how creating a partition or mounting a filesystem
 assigns a "tag" that can be referenced in steps where the
