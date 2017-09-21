@@ -63,6 +63,6 @@ class AnsibleStepRunner(vmdb.StepRunnerInterface):
 
     def create_inventory(self, chroot):
         fd, filename = tempfile.mkstemp()
-        os.write(fd, '[image]\n{}\n'.format(chroot))
+        os.write(fd, '[image]\n{}\n'.format(chroot).encode())
         os.close(fd)
         return filename

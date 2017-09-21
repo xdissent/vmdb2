@@ -42,6 +42,9 @@ class Vmdb2(cliapp.Application):
         self.step_runners = vmdb.StepRunnerList()
 
     def process_args(self, args):
+        if len(args) != 1:
+            sys.exit("No image specification was given on the command line.")
+
         vmdb.set_verbose_progress(self.settings['verbose'])
 
         spec = self.load_spec_file(args[0])
