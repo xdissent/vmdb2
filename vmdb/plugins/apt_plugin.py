@@ -52,8 +52,8 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
 
-        vmdb.runcmd(
-            ['chroot', mount_point] +
+        vmdb.runcmd_chroot(
+            mount_point,
             argv_prefix +
             ['apt-get', '-y', '--no-show-progress', 'install', package],
             env=env)

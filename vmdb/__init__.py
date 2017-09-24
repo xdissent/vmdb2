@@ -24,5 +24,11 @@ from .step_list import (
     NoMatchingRunner,
     StepError,
 )
-from .runcmd import runcmd, set_verbose_progress, progress, error
+from .runcmd import (
+    runcmd,
+    runcmd_chroot,
+    set_verbose_progress,
+    progress,
+    error,
+)
 from .app import Vmdb2

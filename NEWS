@@ -13,6 +13,11 @@ Version 0.8+git, not yet released
 * Stuart added a `qemu-debootstrap` plugin to build images for a
   foreign architecture.
 
+* Lars Wirzenius added the function `vmdb.runcm_chroot` for executing
+  programs inside a chroot. It's a short wrapper around `vmdb.runcmd`,
+  but is a little easier to get right than invoking **chroot**(8) via
+  `runcmd`.
+
 Version 0.8, released 2017-07-29
 ---------------------------------
 

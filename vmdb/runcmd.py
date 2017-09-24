@@ -53,6 +53,11 @@ def runcmd(argv, *argvs, **kwargs):
     return cliapp.runcmd(argv, *argvs, **kwargs)
 
 
+def runcmd_chroot(chroot, argv, *argvs, **kwargs):
+    full_argv = ['chroot'] + argv
+    return runcmd(full_argv, *argvs, **kwargs)
+
+
 def _log_stdout(data):
     logging.debug('STDOUT: %r', data)
     return data
