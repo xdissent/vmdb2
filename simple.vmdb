@@ -21,7 +21,9 @@ steps:
     mirror: http://deb.debian.org/debian
     target: root-fs
 
-  - apt: linux-image-amd64
+  - apt: install
+    packages:
+      - linux-image-amd64
     fs-tag: root-fs
 
   - shell: |

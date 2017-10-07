@@ -24,7 +24,9 @@ steps:
     target: root-fs
     unless: rootfs_unpacked
 
-  - apt: linux-image-amd64
+  - apt: install
+    packages:
+      - linux-image-amd64
     fs-tag: root-fs
     unless: rootfs_unpacked
 
