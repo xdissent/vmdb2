@@ -161,8 +161,8 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         if console == 'serial':
             self.add_grub_serial_console(chroot)
 
-        self.runcmd_chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
-        self.runcmd_chroot(
+        vmdb.runcmd_chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
+        vmdb.runcmd_chroot(
             chroot, [
                 'grub-install',
                 '--target=' + grub_target,
