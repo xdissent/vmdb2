@@ -16,7 +16,7 @@ Version 0.8+git, not yet released
 * Lars Wirzenius added the function `vmdb.runcm_chroot` for executing
   programs inside a chroot. It's a short wrapper around `vmdb.runcmd`,
   but is a little easier to get right than invoking **chroot**(8) via
-  `runcmd`.
+  `runcmd`. Michael Stapelberg fixed the function.
 
 * Lars Wirzenius changed it so that `.vmdb` files can have structured
   YAML values and their constituent strings are used as Jinja2
@@ -24,6 +24,9 @@ Version 0.8+git, not yet released
   possibility to have things like "list of packages to install" for
   the `apt` step as a YAML list, instead of having the step runner
   parse a space delimited list.
+
+* Michael Stapelberg added the `fs-type` parameter to the `mkpart`
+  step so that Raspberry Pi images can be created.
 
 Version 0.8, released 2017-07-29
 ---------------------------------
