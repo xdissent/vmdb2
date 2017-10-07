@@ -17,7 +17,8 @@ Build-Depends: debhelper (>= 9),
   python3-yaml,
   debootstrap,
   parted,
-  kpartx
+  kpartx,
+  pylint3
 
 Package: vmdb2
 Architecture: all
