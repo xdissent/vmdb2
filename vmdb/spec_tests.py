@@ -31,14 +31,70 @@ class SpecTests(unittest.TestCase):
     spec_yaml = '''
     steps:
       - step: foo
+        arg: "{{ var1 }}"
       - step: bar
     '''
 
+    def setUp(self):
+        self.filename = write_temp_file(bytes(self.spec_yaml, 'ascii'))
+        self.spec = vmdb.Spec()
+
+    def tearDown(self):
+        if os.path.exists(self.filename):
+            os.remove(self.filename)
+
     def test_loads_spec(self):
-        filename = write_temp_file(bytes(self.spec_yaml, 'ascii'))
-        spec = vmdb.Spec()
-        spec.load_file(filename)
-        self.assertEqual(spec.as_dict(), as_dict(self.spec_yaml))
+        self.spec.load_file(self.filename)
+        self.assertEqual(self.spec.as_dict(), as_dict(self.spec_yaml))
+
+    def test_expands_templates(self):
+        self.spec.load_file(self.filename)
+        params = {
+            'var1': 'value1',
+        }
+        steps = self.spec.get_steps(params)
+        self.assertEqual(
+            steps,
+            [
+                {
+                    'step': 'foo',
+                    'arg': 'value1',
+                },
+                {
+                    'step': 'bar',
+                },
+            ]
+        )
+
+class ExpandTemplatesTests(unittest.TestCase):
+
+    def test_raises_assert_if_given_incomprehensible_value(self):
+        with self.assertRaises(AssertionError):
+            vmdb.expand_templates(None, {})
+
+    def test_returns_same_given_string_without_template(self):
+        self.assertEqual(vmdb.expand_templates('foo', {}), 'foo')
+
+    def test_expands_simple_string_template(self):
+        params = {
+            'foo': 'bar',
+        }
+        self.assertEqual(vmdb.expand_templates('{{ foo }}', params), 'bar')
+
+    def test_expands_list_of_templates(self):
+        params = {
+            'foo': 'bar',
+        }
+        self.assertEqual(vmdb.expand_templates(['{{ foo }}'], params), ['bar'])
+
+    def test_expands_dict_of_templates(self):
+        params = {
+            'foo': 'bar',
+        }
+        self.assertEqual(
+            vmdb.expand_templates({'key': '{{ foo }}'}, params),
+            {'key': 'bar'}
+        )
 
 
 def write_temp_file(data):

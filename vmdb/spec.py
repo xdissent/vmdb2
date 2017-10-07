@@ -16,6 +16,7 @@
 # =*= License: GPL-3+ =*=
 
 
+import jinja2
 import yaml
 
 
@@ -30,3 +31,21 @@ class Spec:
 
     def as_dict(self):
         return dict(self._dict)
+
+    def get_steps(self, params):
+        return expand_templates(self._dict['steps'], params)
+
+
+def expand_templates(value, params):
+    if isinstance(value, str):
+        template = jinja2.Template(value)
+        return template.render(**params)
+    elif isinstance(value, list):
+        return [expand_templates(x, params) for x in value]
+    elif isinstance(value, dict):
+        return {
+            key: expand_templates(value[key], params)
+            for key in value
+        }
+    else:
+        assert 0, 'Unknown value type: {!r}'.format(value)

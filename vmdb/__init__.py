@@ -33,5 +33,6 @@ from .runcmd import (
 )
 from .spec import (
     Spec,
+    expand_templates,
 )
 from .app import Vmdb2
