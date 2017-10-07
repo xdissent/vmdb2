@@ -31,4 +31,8 @@ from .runcmd import (
     progress,
     error,
 )
+from .spec import (
+    Spec,
+    expand_templates,
+)
 from .app import Vmdb2

@@ -18,6 +18,13 @@ Version 0.8+git, not yet released
   but is a little easier to get right than invoking **chroot**(8) via
   `runcmd`.
 
+* Lars Wirzenius changed it so that `.vmdb` files can have structured
+  YAML values and their constituent strings are used as Jinja2
+  templates. Previously vmdb2 would just crash. This opens a
+  possibility to have things like "list of packages to install" for
+  the `apt` step as a YAML list, instead of having the step runner
+  parse a space delimited list.
+
 Version 0.8, released 2017-07-29
 ---------------------------------
 
