@@ -16,22 +16,38 @@
 # =*= License: GPL-3+ =*=
 
 
-from .version import __version__, __version_info__
-from .state import State
-from .step_list import (
-    StepRunnerList,
-    StepRunnerInterface,
-    NoMatchingRunner,
-    StepError,
-)
-from .runcmd import (
-    runcmd,
-    runcmd_chroot,
-    set_verbose_progress,
-    progress,
-    error,
-)
-from .spec import (
-    Spec,
-)
-from .app import Vmdb2
+import io
+import os
+import tempfile
+import unittest
+
+import yaml
+
+import vmdb
+
+
+class SpecTests(unittest.TestCase):
+
+    spec_yaml = '''
+    steps:
+      - step: foo
+      - step: bar
+    '''
+
+    def test_loads_spec(self):
+        filename = write_temp_file(bytes(self.spec_yaml, 'ascii'))
+        spec = vmdb.Spec()
+        spec.load_file(filename)
+        self.assertEqual(spec.as_dict(), as_dict(self.spec_yaml))
+
+
+def write_temp_file(data):
+    fd, filename = tempfile.mkstemp()
+    os.write(fd, data)
+    os.close(fd)
+    return filename
+
+
+def as_dict(yaml_text):
+    with io.StringIO(yaml_text) as f:
+        return yaml.safe_load(f)

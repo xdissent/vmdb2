@@ -16,22 +16,17 @@
 # =*= License: GPL-3+ =*=
 
 
-from .version import __version__, __version_info__
-from .state import State
-from .step_list import (
-    StepRunnerList,
-    StepRunnerInterface,
-    NoMatchingRunner,
-    StepError,
-)
-from .runcmd import (
-    runcmd,
-    runcmd_chroot,
-    set_verbose_progress,
-    progress,
-    error,
-)
-from .spec import (
-    Spec,
-)
-from .app import Vmdb2
+import yaml
+
+
+class Spec:
+
+    def __init__(self):
+        self._dict = None
+
+    def load_file(self, filename):
+        with open(filename) as f:
+            self._dict = yaml.safe_load(f)
+
+    def as_dict(self):
+        return dict(self._dict)
