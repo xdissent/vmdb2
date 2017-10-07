@@ -45,7 +45,7 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         mount_point = state.mounts[fstag]
 
         if not self.got_eatmydata(state):
-            self.install_package(mount_point, [], 'eatmydata')
+            self.install_packages(mount_point, [], ['eatmydata'])
             state.got_eatmydata = True
         self.install_packages(mount_point, ['eatmydata'], packages)
 
@@ -59,5 +59,5 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         vmdb.runcmd_chroot(
             mount_point,
             argv_prefix +
-            ['apt-get', '-y', '--no-show-progress', 'install', packages],
+            ['apt-get', '-y', '--no-show-progress', 'install'] + packages,
             env=env)
