@@ -54,7 +54,7 @@ def runcmd(argv, *argvs, **kwargs):
 
 
 def runcmd_chroot(chroot, argv, *argvs, **kwargs):
-    full_argv = ['chroot'] + argv
+    full_argv = ['chroot', chroot] + argv
     return runcmd(full_argv, *argvs, **kwargs)
 
 
