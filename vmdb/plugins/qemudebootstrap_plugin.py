@@ -40,10 +40,15 @@ class QemuDebootstrapStepRunner(vmdb.StepRunnerInterface):
         mirror = step['mirror']
         variant = step.get('variant', '-')
         arch = step['arch']
+        components = step.get('components', ['main'])
         if not (suite and tag and target and mirror and arch):
             raise Exception('missing arg for qemu-debootstrap step')
         vmdb.progress(
             'Qemu-debootstrap {} {} {} {}'.format(suite, target, mirror, arch))
         vmdb.runcmd(
-            ['qemu-debootstrap', '--arch', arch, '--variant', variant, suite,
-             target, mirror])
+            ['qemu-debootstrap',
+             '--arch', arch,
+             '--variant', variant,
+             '--components', ','.join(components), suite,
+             target,
+             mirror])
