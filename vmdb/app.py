@@ -20,8 +20,6 @@ import logging
 import sys
 
 import cliapp
-import jinja2
-import yaml
 
 import vmdb
 
@@ -48,13 +46,14 @@ class Vmdb2(cliapp.Application):
         vmdb.set_verbose_progress(self.settings['verbose'])
 
         spec = self.load_spec_file(args[0])
+        state = vmdb.State()
+        params = self.create_template_vars(state)
+        steps = spec.get_steps(params)
 
-        steps = spec['steps']
         # Check that we have step runners for each step
         for step in steps:
             self.step_runners.find(step)
 
-        state = vmdb.State()
         steps_taken, core_meltdown = self.run_steps(steps, state)
         if core_meltdown:
             vmdb.progress('Something went wrong, cleaning up!')
@@ -68,8 +67,9 @@ class Vmdb2(cliapp.Application):
 
     def load_spec_file(self, filename):
         vmdb.progress('Load spec file {}'.format(filename))
-        with open(filename) as f:
-            return yaml.safe_load(f)
+        spec = vmdb.Spec()
+        spec.load_file(filename)
+        return spec
 
     def run_steps(self, steps, state):
         return self.run_steps_helper(
@@ -87,13 +87,12 @@ class Vmdb2(cliapp.Application):
             try:
                 logging.info(msg, step)
                 steps_taken.append(step)
-                expanded_step = self.expand_step_spec(step, state)
                 runner = self.step_runners.find(step)
                 if runner.skip(step, self.settings, state):
                     logging.info('Skipping as requested')
                 else:
                     method = getattr(runner, method_name)
-                    method(expanded_step, self.settings, state)
+                    method(step, self.settings, state)
             except BaseException as e:
                 vmdb.error(str(e))
                 core_meltdown = True
@@ -101,20 +100,6 @@ class Vmdb2(cliapp.Application):
                     break
 
         return steps_taken, core_meltdown
-
-    def format_step(self, runner, step):
-        return str(step)
-
-    def expand_step_spec(self, step, state):
-        expanded = {}
-        for key in step:
-            expanded[key] = self.expand_jinja2(step[key], state)
-        return expanded
-
-    def expand_jinja2(self, value, state):
-        template = jinja2.Template(value)
-        vars = self.create_template_vars(state)
-        return template.render(**vars)
 
     def create_template_vars(self, state):
         vars = dict()
