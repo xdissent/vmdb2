@@ -33,6 +33,10 @@ Version 0.8+git, not yet released
   `install` and a separate field `packages` is a YAML list of package
   names to install. These will all be installed at once.
 
+* Michael Stapelberg and Lars Wirzenius added support for a
+  `components` list to the `qemu-debootstrap` step, to allow giving a
+  list of components to the debootstrap run by the step.
+
 Version 0.8, released 2017-07-29
 ---------------------------------
 
