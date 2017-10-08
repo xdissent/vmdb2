@@ -31,6 +31,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
   debootstrap,
   parted,
   kpartx
+Recommends: ansible
 Description: creator of disk images with Debian installed
  vmdb2 will be a successor of vmdebootstrap. It will create disk images
  for virtual machines and real hardware, with partitioning, and a boot
