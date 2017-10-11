@@ -1,10 +1,10 @@
-vmdb2 (0.8+git-1) UNRELEASED; urgency=medium
+vmdb2 (0.9-1) unstable; urgency=medium
 
   * New upstream version.
   * Add build-dep on python3-coverage-test-runner, pylint3.
   * Recommend ansible when vmdb2 is installed.
 
- -- Lars Wirzenius <liw@liw.fi>  Sat, 29 Jul 2017 16:58:45 +0300
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 11 Oct 2017 18:46:59 +0300
 
 vmdb2 (0.8-1) unstable; urgency=medium
 
