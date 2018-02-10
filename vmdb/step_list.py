@@ -47,8 +47,7 @@ class StepRunnerInterface(object):  # pragma: no cover
 
         if isinstance(value, list):
             return all(getattr(state, field, False) for field in value)
-        else:
-            return getattr(state, value, False)
+        return getattr(state, value, False)
 
 
 class StepRunnerList(object):
