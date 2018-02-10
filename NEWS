@@ -4,6 +4,8 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.10+git, not yet released
 ----------------------------------
 
+* Build fixes so that .deb doesn't contain Python 2.7 stuff, which
+  isn't wanted or used.
 
 Version 0.10, released 2018-02-10
 ---------------------------------
