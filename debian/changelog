@@ -2,6 +2,7 @@ vmdb2 (0.11+git-1) UNRELEASED; urgency=medium
 
   * New upstream version.
   * debian/copyright: Added Stuart.
+  * debian/control: Updated Homepage, patch from Geert Stappers.
 
  -- Lars Wirzenius <liw@liw.fi>  Sat, 10 Feb 2018 17:56:43 +0200
 
