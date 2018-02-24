@@ -1,6 +1,7 @@
 vmdb2 (0.11+git-1) UNRELEASED; urgency=medium
 
   * New upstream version.
+  * debian/copyright: Added Stuart.
 
  -- Lars Wirzenius <liw@liw.fi>  Sat, 10 Feb 2018 17:56:43 +0200
 
