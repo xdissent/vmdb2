@@ -45,13 +45,13 @@ class MakeCacheStepRunner(vmdb.StepRunnerInterface):
         fs_tag = step['cache-rootfs']
         rootdir = state.mounts[fs_tag]
         tar_path = settings['rootfs-tarball']
+        opts = step.get('options', '--one-file-system').split()
         if not tar_path:
             raise Exception('--rootfs-tarball MUST be set')
         if not os.path.exists(tar_path):
             vmdb.progress(
                 'Caching contents of {} to {}'.format(rootdir, tar_path))
-            vmdb.runcmd(['tar', '-C', rootdir, '--one-file-system',
-                         '-caf', tar_path, '.'])
+            vmdb.runcmd(['tar'] + opts + ['-C', rootdir, '-caf', tar_path, '.'])
 
 
 class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
