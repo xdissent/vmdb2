@@ -1,7 +1,4 @@
 steps:
-  - mkimg: "{{ output }}"
-    size: 4G
-
   - mklabel: gpt
     device: "{{ output }}"
 

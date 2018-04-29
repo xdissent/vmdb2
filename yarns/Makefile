@@ -22,6 +22,7 @@ yarns.pdf: $(yarns) Makefile
 	pandoc --chapters --toc -o yarns.pdf *.yarn
 
 yarns.html: $(yarns) Makefile ugly.css
-	pandoc -H ugly.css --smart --toc --chapters --number-sections \
+	pandoc -H ugly.css -f markdown+smart --toc \
+		--top-level-division=chapter --number-sections \
                 -V geometry:lettersize \
 		--standalone --self-contained -o yarns.html *.yarn
