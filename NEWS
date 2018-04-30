@@ -5,9 +5,10 @@ Version 0.13+git, not yet released
 ----------------------------------
 
 
-Version 0.13, released 2018-04-30
+Version 0.13.1, released 2018-04-30
 ----------------------------------
 
+* Fix build-dependency on pandoc.
 
 Version 0.12, released 2018-02-24
 ----------------------------------
