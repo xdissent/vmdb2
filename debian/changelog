@@ -1,9 +1,9 @@
-vmdb2 (0.12+git-1) UNRELEASED; urgency=medium
+vmdb2 (0.13-1) unstable; urgency=medium
 
   * New upstream version.
   * Use new pandoc options (Closes: #897107)
 
- -- Lars Wirzenius <liw@liw.fi>  Sat, 24 Feb 2018 11:05:34 +0200
+ -- Lars Wirzenius <liw@liw.fi>  Mon, 30 Apr 2018 11:23:38 +0300
 
 vmdb2 (0.12-1) unstable; urgency=medium
 
