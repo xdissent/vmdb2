@@ -23,11 +23,13 @@ steps:
   - unpack-rootfs: root-fs
 
   - debootstrap: stretch
-    mirror: http://http.debian.net/debian
+    mirror: http://deb.debian.org/debian
     target: root-fs
     unless: rootfs_unpacked
 
-  - apt: linux-image-amd64
+  - apt: install
+    packages:
+    - linux-image-amd64
     fs-tag: root-fs
     unless: rootfs_unpacked
 

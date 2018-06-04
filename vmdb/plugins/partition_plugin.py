@@ -39,7 +39,7 @@ class MklabelStepRunner(vmdb.StepRunnerInterface):
         device = step['device']
         vmdb.progress(
             'Creating partition table ({}) on {}'.format(label_type, device))
-        vmdb.runcmd(['parted', device, 'mklabel', label_type])
+        vmdb.runcmd(['parted', '-s', device, 'mklabel', label_type])
         state.parts = {}
 
 
@@ -54,11 +54,12 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         start = step['start']
         end = step['end']
         part_tag = step['part-tag']
+        fs_type = step.get('fs-type', 'ext2')
 
         vmdb.progress(
             'Creating partition ({}) on {} ({} to {})'.format(
                 part_type, device, start, end))
-        vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, start, end])
+        vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, fs_type, start, end])
 
         vmdb.runcmd(['kpartx', '-dsv', device])
         output = vmdb.runcmd(['kpartx', '-asv', device]).decode('UTF-8')

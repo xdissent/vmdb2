@@ -44,7 +44,7 @@ class ChrootStepRunner(vmdb.StepRunnerInterface):
 
         vmdb.progress(
             'chroot {} to {}'.format(mount_point, ' '.join(shell.split('\n'))))
-        vmdb.runcmd(['chroot', mount_point, 'sh', '-c', shell])
+        vmdb.runcmd_chroot(mount_point, ['sh', '-c', shell])
 
 
 class ShellStepRunner(vmdb.StepRunnerInterface):

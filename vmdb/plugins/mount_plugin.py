@@ -81,4 +81,5 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         mount_point = state.mounts[fs_tag]
 
         vmdb.runcmd(['umount', mount_point])
-        os.rmdir(mount_point)
+        if not step.get('mount-on'):
+            os.rmdir(mount_point)

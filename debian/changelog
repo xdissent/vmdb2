@@ -1,8 +1,37 @@
-vmdb2 (0.8+git-1) UNRELEASED; urgency=medium
+vmdb2 (0.12+git-1) UNRELEASED; urgency=medium
+
+  * New upstream version.
+  * Use new pandoc options (Closes: #897107)
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 24 Feb 2018 11:05:34 +0200
+
+vmdb2 (0.12-1) unstable; urgency=medium
+
+  * New upstream version.
+  * debian/copyright: Added Stuart.
+  * debian/control: Updated Homepage, patch from Geert Stappers.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 24 Feb 2018 11:05:32 +0200
+
+vmdb2 (0.11-1) unstable; urgency=medium
 
   * New upstream version.
 
- -- Lars Wirzenius <liw@liw.fi>  Sat, 29 Jul 2017 16:58:45 +0300
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 10 Feb 2018 17:56:41 +0200
+
+vmdb2 (0.10-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Lars Wirzenius <liw@liw.fi>  Sat, 10 Feb 2018 17:04:30 +0200
+
+vmdb2 (0.9-1) unstable; urgency=medium
+
+  * New upstream version.
+  * Add build-dep on python3-coverage-test-runner, pylint3.
+  * Recommend ansible when vmdb2 is installed.
+
+ -- Lars Wirzenius <liw@liw.fi>  Wed, 11 Oct 2017 18:46:59 +0300
 
 vmdb2 (0.8-1) unstable; urgency=medium
 

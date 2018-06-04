@@ -1,7 +1,4 @@
 steps:
-  - mkimg: "{{ output }}"
-    size: 4G
-
   - mklabel: gpt
     device: "{{ output }}"
 
@@ -18,10 +15,12 @@ steps:
     fs-tag: root-fs
 
   - debootstrap: stretch
-    mirror: http://http.debian.net/debian
+    mirror: http://deb.debian.org/debian
     target: root-fs
 
-  - apt: linux-image-amd64
+  - apt: install
+    packages:
+      - linux-image-amd64
     fs-tag: root-fs
 
   - shell: |

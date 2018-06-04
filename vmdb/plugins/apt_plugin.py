@@ -33,27 +33,31 @@ class AptPlugin(cliapp.Plugin):
 class AptStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['apt', 'fs-tag']
+        return ['apt', 'fs-tag', 'packages']
 
     def run(self, step, settings, state):
-        package = step['apt']
+        operation = step['apt']
+        if operation != 'install':
+            raise Exception('"apt" must always have value "install"')
+
+        packages = step['packages']
         fstag = step['fs-tag']
         mount_point = state.mounts[fstag]
 
         if not self.got_eatmydata(state):
-            self.install_package(mount_point, [], 'eatmydata')
+            self.install_packages(mount_point, [], ['eatmydata'])
             state.got_eatmydata = True
-        self.install_package(mount_point, ['eatmydata'], package)
+        self.install_packages(mount_point, ['eatmydata'], packages)
 
     def got_eatmydata(self, state):
         return hasattr(state, 'got_eatmydata') and getattr(state, 'got_eatmydata')
 
-    def install_package(self, mount_point, argv_prefix, package):
+    def install_packages(self, mount_point, argv_prefix, packages):
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
 
-        vmdb.runcmd(
-            ['chroot', mount_point] +
+        vmdb.runcmd_chroot(
+            mount_point,
             argv_prefix +
-            ['apt-get', '-y', '--no-show-progress', 'install', package],
+            ['apt-get', '-y', '--no-show-progress', 'install'] + packages,
             env=env)

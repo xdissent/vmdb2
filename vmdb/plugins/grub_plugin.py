@@ -161,8 +161,8 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         if console == 'serial':
             self.add_grub_serial_console(chroot)
 
-        self.chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
-        self.chroot(
+        vmdb.runcmd_chroot(chroot, ['grub-mkconfig', '-o', '/boot/grub/grub.cfg'])
+        vmdb.runcmd_chroot(
             chroot, [
                 'grub-install',
                 '--target=' + grub_target,
@@ -224,13 +224,10 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         vmdb.progress('Install {} in chroot {}'.format(package, chroot))
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
-        self.chroot(
+        vmdb.runcmd_chroot(
             chroot,
             ['apt-get', '-y', '--no-show-progress', 'install', package],
             env=env)
-
-    def chroot(self, chroot, argv, **kwargs):
-        return vmdb.runcmd(['chroot', chroot] + argv, **kwargs)
 
     def set_grub_cmdline_config(self, chroot, kernel_params):
         param_string = ' '.join(kernel_params)
