@@ -4,6 +4,8 @@ NEWS for vmdb2, the Debian disk image builder
 Version 0.13.2+git, not yet released
 ------------------------------------
 
+* Source code for vmdb2 is now hosted on git.liw.fi, moved there from
+  GitHub.
 
 Version 0.13.2, released 2018-05-06
 ------------------------------------
