@@ -38,13 +38,13 @@ If you want to use pull requests, use the repository in GitHub.
 Getting vmdb2
 -----------------------------------------------------------------------------
 
-vmdb2 source code is available via git in two (identical)
-repositories:
+vmdb2 source code is available via git:
 
 * <http://git.liw.fi/vmdb2>
-* <https://github.com/larswirzenius/vmdb2>
 
-Use either repository as you wish.
+It used to be on GitHub as well, but was withdrawn from there due to
+GitHub being a proprietary service and a dislike of its development
+workflow.
 
 Requirements:
 
