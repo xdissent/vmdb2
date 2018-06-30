@@ -44,3 +44,4 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
         vmdb.progress(
             'Debootstrap {} {} {}'.format(suite, target, mirror))
         vmdb.runcmd(['debootstrap', '--variant', variant, suite, target, mirror])
+        vmdb.runcmd_chroot(target, ['apt-get', 'update'])
