@@ -40,7 +40,7 @@ testing multiple time much faster.
     EOF
     chmod a+rx run.sh
     cat << EOF > expect.txt
-    set timeout 30
+    set timeout 300
     proc abort {} {
         puts "ERROR ERROR\n"
         exit 1
