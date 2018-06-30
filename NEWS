@@ -7,6 +7,13 @@ Version 0.13.2+git, not yet released
 * Source code for vmdb2 is now hosted on git.liw.fi, moved there from
   GitHub.
 
+* Fixed smoke test timeout for starting a VM to 5 min. The previous
+  timeout (30 s) was short enough that tests often failed because of
+  it.
+
+* The `debootstrap` action now finishes with `apt-get update`. For
+  some reason thing had changed so that this became necessary.x
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
