@@ -49,6 +49,9 @@ class AptStepRunner(vmdb.StepRunnerInterface):
             state.got_eatmydata = True
         self.install_packages(mount_point, ['eatmydata'], packages)
 
+        if step.get('clean', True):
+            self.clean_cache(mount_point)
+
     def got_eatmydata(self, state):
         return hasattr(state, 'got_eatmydata') and getattr(state, 'got_eatmydata')
 
@@ -60,4 +63,13 @@ class AptStepRunner(vmdb.StepRunnerInterface):
             mount_point,
             argv_prefix +
             ['apt-get', '-y', '--no-show-progress', 'install'] + packages,
+            env=env)
+
+    def clean_cache(self, mount_point):
+        env = os.environ.copy()
+        env['DEBIAN_FRONTEND'] = 'noninteractive'
+
+        vmdb.runcmd_chroot(
+            mount_point,
+            ['apt-get', 'clean'],
             env=env)
