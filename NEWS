@@ -14,6 +14,9 @@ Version 0.13.2+git, not yet released
 * The `debootstrap` action now finishes with `apt-get update`. For
   some reason thing had changed so that this became necessary.x
 
+* Christian Schlüter added the optional `label` field to the `mkfs`
+  step to set the filesystem label upon creation.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
