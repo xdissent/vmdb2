@@ -13,6 +13,7 @@ steps:
 
   - mkfs: ext4
     partition: root-part
+    label: smoke
 
   - mount: root-part
     fs-tag: root-fs
