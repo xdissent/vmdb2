@@ -13,6 +13,7 @@ Build-Depends: debhelper (>= 9),
   cmdtest,
   python3-yaml,
   debootstrap,
+  qemu-utils,
   parted,
   kpartx
 
@@ -25,6 +26,7 @@ Depends: ${python3:Depends}, ${misc:Depends},
   python3-yaml,
   cmdtest,
   debootstrap,
+  qemu-utils,
   parted,
   kpartx
 Recommends: ansible

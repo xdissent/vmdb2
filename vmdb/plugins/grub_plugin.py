@@ -189,9 +189,12 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
     def get_image_loop_device(self, partition_device):
         # We get /dev/mappers/loopXpY and return /dev/loopX
-        assert partition_device.startswith('/dev/mapper/loop')
+        # assert partition_device.startswith('/dev/mapper/loop')
 
-        m = re.match(r'^/dev/mapper/(?P<loop>loop\d+)p\d+$', partition_device)
+        m = re.match(r'^/dev/mapper/(?P<loop>.*)p\d+$', partition_device)
+        if m is None:
+            raise Exception('Do not understand partitio device name {}'.format(
+                partition_device))
         assert m is not None
 
         loop = m.group('loop')
