@@ -193,7 +193,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
         m = re.match(r'^/dev/mapper/(?P<loop>.*)p\d+$', partition_device)
         if m is None:
-            raise Exception('Do not understand partitio device name {}'.format(
+            raise Exception('Do not understand partition device name {}'.format(
                 partition_device))
         assert m is not None
 
