@@ -125,7 +125,9 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         root_part = step['root-part']
         root_dev = state.parts[root_part]
 
-        image_dev = self.get_image_loop_device(root_dev)
+        image_dev = step.get('image-dev')
+        if image_dev is None:
+            image_dev = self.get_image_loop_device(root_dev)
 
         if 'efi-part' in step:
             efi_part = step['efi-part']
