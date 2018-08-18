@@ -17,6 +17,9 @@
 
 
 
+import os
+import stat
+
 import cliapp
 
 import vmdb
@@ -61,6 +64,23 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
                 part_type, device, start, end))
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, fs_type, start, end])
 
+        if self.is_block_dev(device):
+            self.remember_partition(state, device, part_tag)
+        else:
+            part_dev = self.create_loop_dev(device)
+            assert part_dev is not None
+            self.remember_partition(state, part_dev, part_tag)
+
+    def is_block_dev(self, filename):
+        st = os.lstat(filename)
+        return stat.S_ISBLK(st.st_mode)
+
+    def remember_partition(self, state, part_dev, part_tag):
+        parts = getattr(state, 'parts', {})
+        parts[part_tag] = part_dev
+        state.parts = parts
+
+    def create_loop_dev(self, device):
         vmdb.runcmd(['kpartx', '-dsv', device])
         output = vmdb.runcmd(['kpartx', '-asv', device]).decode('UTF-8')
         device_file = None
@@ -68,12 +88,8 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
             words = line.split()
             if words[0] == 'add':
                 name = words[2]
-                device_file = '/dev/mapper/{}'.format(name)
-
-        assert device_file is not None
-        parts = getattr(state, 'parts', {})
-        parts[part_tag] = device_file
-        state.parts = parts
+                return '/dev/mapper/{}'.format(name)
+        return None
 
     def teardown(self, step, settings, state):
         device = step['device']
