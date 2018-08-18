@@ -62,10 +62,16 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         vmdb.progress(
             'Creating partition ({}) on {} ({} to {})'.format(
                 part_type, device, start, end))
+
+        orig = self.list_partitions(device)
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, fs_type, start, end])
+        new = self.list_partitions(device)
+        diff = self.diff_partitions(orig, new)
+        print('diff:', diff)
+        assert len(diff) == 1
 
         if self.is_block_dev(device):
-            self.remember_partition(state, device, part_tag)
+            self.remember_partition(state, diff[0], part_tag)
         else:
             part_dev = self.create_loop_dev(device)
             assert part_dev is not None
@@ -75,7 +81,28 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         st = os.lstat(filename)
         return stat.S_ISBLK(st.st_mode)
 
+    def list_partitions(self, device):
+        output = vmdb.runcmd(['parted', '-m', device, 'print'])
+        output = output.decode('UTF-8')
+        partitions = [
+            line.split(':')[0]
+            for line in output.splitlines()
+            if ':' in line
+        ]
+        return [
+            word if word.startswith('/') else '{}{}'.format(device, word)
+            for word in partitions
+        ]
+
+    def diff_partitions(self, old, new):
+        return [
+            line
+            for line in new
+            if line not in old
+        ]
+
     def remember_partition(self, state, part_dev, part_tag):
+        print('remembering partition', part_dev, 'as', part_tag)
         parts = getattr(state, 'parts', {})
         parts[part_tag] = part_dev
         state.parts = parts
