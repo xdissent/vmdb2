@@ -36,7 +36,7 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
     def run(self, step, settings, state):
         suite = step['debootstrap']
         tag = step['target']
-        target = state.mounts[tag]
+        target = state.get_mount_point(tag)
         mirror = step['mirror']
         variant = step.get('variant', '-')
         if not (suite and tag and target and mirror):

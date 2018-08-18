@@ -33,6 +33,9 @@ class Image:
     def get_tags(self):
         return list(self._tags.keys())
 
+    def has_tag(self, tag):
+        return tag in self._tags
+
     def get_dev(self, tag):
         item = self._tags.get(tag)
         if item is None:

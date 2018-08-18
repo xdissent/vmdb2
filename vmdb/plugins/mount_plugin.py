@@ -17,6 +17,7 @@
 
 
 
+import logging
 import os
 import tempfile
 
@@ -34,7 +35,7 @@ class MountPlugin(cliapp.Plugin):
 class MountStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['mount', 'fs-tag']
+        return ['mount']
 
     def run(self, step, settings, state):
         self.mount_rootfs(step, settings, state)
@@ -43,42 +44,37 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         self.unmount_rootfs(step, settings, state)
 
     def mount_rootfs(self, step, settings, state):
-        if not hasattr(state, 'mounts'):
-            state.mounts = {}
-
-        part_tag = step['mount']
-        fs_tag = step['fs-tag']
+        tag = step['mount']
         dirname = step.get('dirname')
         mount_on = step.get('mount-on')
 
-        if fs_tag in state.mounts:
-            raise Exception('fs-tag {} already used'.format(fs_tag))
+        device = state.tags.get_dev(tag)
 
         if dirname:
             if not mount_on:
                 raise Exception('no mount-on tag given')
 
-            if mount_on not in state.mounts:
+            if not state.tags.has_tag(mount_on):
                 raise Exception('cannot find tag {}'.format(mount_on))
 
             mount_point = os.path.join(
-                state.mounts[mount_on], './' + step['dirname'])
+                state.tags.get_mount_point(mount_on), './' + dirname)
 
             if not os.path.exists(mount_point):
                 os.makedirs(mount_point)
         else:
             mount_point = tempfile.mkdtemp()
 
-        device = state.parts[part_tag]
-
         vmdb.runcmd(['mount', device, mount_point])
-        state.mounts[fs_tag] = mount_point
+        state.tags.add_mount_point(tag, mount_point)
 
         return mount_point
 
     def unmount_rootfs(self, step, settings, state):
-        fs_tag = step['fs-tag']
-        mount_point = state.mounts[fs_tag]
+        tag = step['mount']
+        mount_point = state.tags.get_mount_point(tag)
+        if mount_point is None:
+            return
 
         try:
             vmdb.unmount(mount_point)

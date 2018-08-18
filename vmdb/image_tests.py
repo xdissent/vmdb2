@@ -28,6 +28,12 @@ class ImageTests(unittest.TestCase):
         image = vmdb.Image()
         self.assertEqual(image.get_tags(), [])
 
+    def test_tells_if_tag_is_used(self):
+        image = vmdb.Image()
+        self.assertFalse(image.has_tag('foo'))
+        image.add_partition('foo', 'bar')
+        self.assertTrue(image.has_tag('foo'))
+
     def test_get_dev_raises_error_for_unknown_tag(self):
         image = vmdb.Image()
         with self.assertRaises(vmdb.UnknownTag):

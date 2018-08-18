@@ -33,7 +33,7 @@ class AptPlugin(cliapp.Plugin):
 class AptStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['apt', 'fs-tag', 'packages']
+        return ['apt', 'tag', 'packages']
 
     def run(self, step, settings, state):
         operation = step['apt']
@@ -41,8 +41,8 @@ class AptStepRunner(vmdb.StepRunnerInterface):
             raise Exception('"apt" must always have value "install"')
 
         packages = step['packages']
-        fstag = step['fs-tag']
-        mount_point = state.mounts[fstag]
+        tag = step['tag']
+        mount_point = state.tags.get_mount_point(tag)
 
         if not self.got_eatmydata(state):
             self.install_packages(mount_point, [], ['eatmydata'])

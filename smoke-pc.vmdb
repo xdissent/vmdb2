@@ -9,37 +9,35 @@ steps:
     device: "{{ output }}"
     start: 0%
     end: 100%
-    part-tag: root-part
+    tag: rootfs
 
   - mkfs: ext4
-    partition: root-part
+    partition: rootfs
     label: smoke
 
-  - mount: root-part
-    fs-tag: root-fs
+  - mount: rootfs
 
-  - unpack-rootfs: root-fs
+  - unpack-rootfs: rootfs
 
   - debootstrap: stretch
     mirror: http://deb.debian.org/debian
-    target: root-fs
+    target: rootfs
     unless: rootfs_unpacked
 
   - apt: install
     packages:
       - linux-image-amd64
-    fs-tag: root-fs
+    tag: rootfs
     unless: rootfs_unpacked
 
-  - cache-rootfs: root-fs
+  - cache-rootfs: rootfs
     unless: rootfs_unpacked
 
-  - chroot: root-fs
+  - chroot: rootfs
     shell: |
       sed -i '/^root:[^:]*:/s//root::/' /etc/passwd
       echo pc-vmdb2 > /etc/hostname
 
   - grub: bios
-    root-fs: root-fs
-    root-part: root-part
+    tag: rootfs
     console: serial

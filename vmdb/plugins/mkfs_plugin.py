@@ -35,10 +35,9 @@ class MkfsStepRunner(vmdb.StepRunnerInterface):
 
     def run(self, step, settings, state):
         fstype = step['mkfs']
-        part_tag = step['partition']
-        device = state.parts[part_tag]
-        vmdb.progress(
-            'Creating {} filesystem on {}'.format(fstype, device))
+        tag = step['partition']
+        device = state.tags.get_dev(tag)
+
         cmd = ['/sbin/mkfs', '-t', fstype]
         if 'label' in step:
             if fstype == 'vfat':

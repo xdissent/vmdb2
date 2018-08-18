@@ -37,13 +37,9 @@ class AnsibleStepRunner(vmdb.StepRunnerInterface):
         return ['ansible', 'playbook']
 
     def run(self, step, settings, state):
-        fstag = step['ansible']
+        tag = step['ansible']
         playbook = step['playbook']
-        mount_point = state.mounts[fstag]
-
-        vmdb.progress(
-            'Running ansible playbook {} on filesystem at {} ({})'.format(
-                playbook, mount_point, fstag))
+        mount_point = state.tags.get_mount_point(tag)
 
         state.ansible_inventory = self.create_inventory(mount_point)
         vmdb.progress(

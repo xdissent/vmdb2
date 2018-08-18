@@ -35,28 +35,25 @@ class PartitionPlugin(cliapp.Plugin):
 class MklabelStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['mklabel']
+        return ['mklabel', 'device']
 
     def run(self, step, settings, state):
         label_type = step['mklabel']
         device = step['device']
-        vmdb.progress(
-            'Creating partition table ({}) on {}'.format(label_type, device))
         vmdb.runcmd(['parted', '-s', device, 'mklabel', label_type])
-        state.parts = {}
 
 
 class MkpartStepRunner(vmdb.StepRunnerInterface):
 
     def get_required_keys(self):
-        return ['mkpart']
+        return ['mkpart', 'device', 'start', 'end', 'tag']
 
     def run(self, step, settings, state):
         part_type = step['mkpart']
         device = step['device']
         start = step['start']
         end = step['end']
-        part_tag = step['part-tag']
+        part_tag = step['tag']
         fs_type = step.get('fs-type', 'ext2')
 
         vmdb.progress(
@@ -103,9 +100,7 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
 
     def remember_partition(self, state, part_dev, part_tag):
         print('remembering partition', part_dev, 'as', part_tag)
-        parts = getattr(state, 'parts', {})
-        parts[part_tag] = part_dev
-        state.parts = parts
+        state.tags.add_partition(part_tag, part_dev)
 
     def create_loop_dev(self, device):
         vmdb.runcmd(['kpartx', '-dsv', device])
@@ -120,6 +115,4 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
 
     def teardown(self, step, settings, state):
         device = step['device']
-        vmdb.progress(
-            'Undoing loopback devices for partitions on {}'.format(device))
         vmdb.runcmd(['kpartx', '-dsv', device])
