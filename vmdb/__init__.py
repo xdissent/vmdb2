@@ -31,6 +31,7 @@ from .runcmd import (
     progress,
     error,
 )
+from .image import Image, UnknownTag, TagInUse, AlreadyMounted
 from .unmount import unmount, NotMounted
 from .spec import (
     Spec,
