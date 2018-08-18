@@ -80,6 +80,10 @@ class MountStepRunner(vmdb.StepRunnerInterface):
         fs_tag = step['fs-tag']
         mount_point = state.mounts[fs_tag]
 
-        vmdb.runcmd(['umount', mount_point])
+        try:
+            vmdb.unmount(mount_point)
+        except vmdb.NotMounted as e:
+            logging.warning(str(e))
+
         if not step.get('mount-on'):
             os.rmdir(mount_point)

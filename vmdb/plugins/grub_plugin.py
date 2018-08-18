@@ -187,7 +187,10 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         mounts.reverse()
         while mounts:
             mount_point = mounts.pop()
-            vmdb.runcmd(['umount', mount_point])
+            try:
+                vmdb.unmount(mount_point)
+            except vmdb.NotMounted as e:
+                logging.warning(str(e))
 
     def get_image_loop_device(self, partition_device):
         # We get /dev/mappers/loopXpY and return /dev/loopX
