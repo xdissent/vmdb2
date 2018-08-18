@@ -31,6 +31,7 @@ from .runcmd import (
     progress,
     error,
 )
+from .unmount import unmount, NotMounted
 from .spec import (
     Spec,
     expand_templates,
