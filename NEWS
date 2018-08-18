@@ -12,10 +12,15 @@ Version 0.13.2+git, not yet released
   it.
 
 * The `debootstrap` action now finishes with `apt-get update`. For
-  some reason thing had changed so that this became necessary.x
+  some reason thing had changed so that this became necessary.
 
 * Christian Schlüter added the optional `label` field to the `mkfs`
   step to set the filesystem label upon creation.
+
+* Changed the `grub` step to take an optional `image-dev` field to
+  override the heuristics for finding the device where GRUB is to be
+  installed. This was necessary to allow vmdb2 to install Debian onto
+  real hardware.
 
 Version 0.13.2, released 2018-05-06
 ------------------------------------
