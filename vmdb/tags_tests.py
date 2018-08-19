@@ -22,57 +22,77 @@ import unittest
 import vmdb
 
 
-class ImageTests(unittest.TestCase):
+class TagsTests(unittest.TestCase):
 
     def test_lists_not_tags_initally(self):
-        image = vmdb.Image()
-        self.assertEqual(image.get_tags(), [])
+        tags = vmdb.Tags()
+        self.assertEqual(tags.get_tags(), [])
 
     def test_tells_if_tag_is_used(self):
-        image = vmdb.Image()
-        self.assertFalse(image.has_tag('foo'))
-        image.add_partition('foo', 'bar')
-        self.assertTrue(image.has_tag('foo'))
+        tags = vmdb.Tags()
+        self.assertFalse(tags.has_tag('foo'))
+        tags.append('foo')
+        self.assertTrue(tags.has_tag('foo'))
+        self.assertEqual(tags.get_tags(), ['foo'])
+
+    def test_remembers_order(self):
+        tags = vmdb.Tags()
+        tags.append('foo')
+        tags.append('bar')
+        self.assertTrue(tags.get_tags(), ['foo', 'bar'])
 
     def test_get_dev_raises_error_for_unknown_tag(self):
-        image = vmdb.Image()
+        tags = vmdb.Tags()
         with self.assertRaises(vmdb.UnknownTag):
-            image.get_dev('does-not-exist')
+            tags.get_dev('does-not-exist')
 
     def test_get_mount_point_raises_error_for_unknown_tag(self):
-        image = vmdb.Image()
+        tags = vmdb.Tags()
         with self.assertRaises(vmdb.UnknownTag):
-            image.get_mount_point('does-not-exist')
+            tags.get_mount_point('does-not-exist')
 
     def test_raises_error_for_reused_tag(self):
-        image = vmdb.Image()
-        image.add_partition('tag', 'dev')
+        tags = vmdb.Tags()
+        tags.append('tag')
         with self.assertRaises(vmdb.TagInUse):
-            image.add_partition('tag', 'dev')
+            tags.append('tag')
 
-    def test_adds_partition(self):
-        image = vmdb.Image()
-        image.add_partition('first', '/dev/foo')
-        self.assertEqual(image.get_tags(), ['first'])
-        self.assertEqual(image.get_dev('first'), '/dev/foo')
-        self.assertEqual(image.get_mount_point('first'), None)
+    def test_sets_dev(self):
+        tags = vmdb.Tags()
+        tags.append('first')
+        tags.set_dev('first', '/dev/foo')
+        self.assertEqual(tags.get_tags(), ['first'])
+        self.assertEqual(tags.get_dev('first'), '/dev/foo')
+        self.assertEqual(tags.get_mount_point('first'), None)
 
     def test_adds_mount_point(self):
-        image = vmdb.Image()
-        image.add_partition('first', '/dev/foo')
-        image.add_mount_point('first', '/mnt/foo')
-        self.assertEqual(image.get_tags(), ['first'])
-        self.assertEqual(image.get_dev('first'), '/dev/foo')
-        self.assertEqual(image.get_mount_point('first'), '/mnt/foo')
+        tags = vmdb.Tags()
+        tags.append('first')
+        tags.set_mount_point('first', '/mnt/foo')
+        self.assertEqual(tags.get_tags(), ['first'])
+        self.assertEqual(tags.get_dev('first'), None)
+        self.assertEqual(tags.get_mount_point('first'), '/mnt/foo')
 
-    def test_add_mount_point_raises_error_for_unknown_tag(self):
-        image = vmdb.Image()
+    def test_set_dev_raises_error_for_unknown_tag(self):
+        tags = vmdb.Tags()
         with self.assertRaises(vmdb.UnknownTag):
-            image.add_mount_point('first', '/mnt/foo')
+            tags.set_dev('first', '/mnt/foo')
 
-    def test_add_mount_point_raises_error_for_double_mount(self):
-        image = vmdb.Image()
-        image.add_partition('first', '/dev/foo')
-        image.add_mount_point('first', '/mnt/foo')
+    def test_set_mount_point_raises_error_for_unknown_tag(self):
+        tags = vmdb.Tags()
+        with self.assertRaises(vmdb.UnknownTag):
+            tags.set_mount_point('first', '/mnt/foo')
+
+    def test_set_mount_point_raises_error_for_double_mount(self):
+        tags = vmdb.Tags()
+        tags.append('first')
+        tags.set_mount_point('first', '/mnt/foo')
         with self.assertRaises(vmdb.AlreadyMounted):
-            image.add_mount_point('first', '/mnt/foo')
+            tags.set_mount_point('first', '/mnt/foo')
+
+    def test_set_dev_raises_error_for_double_dev(self):
+        tags = vmdb.Tags()
+        tags.append('first')
+        tags.set_dev('first', '/dev/foo')
+        with self.assertRaises(vmdb.AlreadyHasDev):
+            tags.set_dev('first', '/dev/foo')

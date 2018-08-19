@@ -29,6 +29,7 @@ class Tags:
 
     def __init__(self):
         self._tags = {}
+        self._tagnames = []
 
     def get_tags(self):
         return list(self._tags.keys())
@@ -37,35 +38,39 @@ class Tags:
         return tag in self._tags
 
     def get_dev(self, tag):
-        item = self._tags.get(tag)
-        if item is None:
-            raise UnknownTag(tag)
+        item = self._get(tag)
         return item['dev']
 
     def get_mount_point(self, tag):
-        item = self._tags.get(tag)
-        if item is None:
-            raise UnknownTag(tag)
+        item = self._get(tag)
         return item['mount_point']
 
-    def add_partition(self, tag, dev):
+    def append(self, tag):
         if tag in self._tags:
             raise TagInUse(tag)
-        self._new(tag, dev, None)
+        self._tagnames.append(tag)
+        self._tags[tag] = {
+            'dev': None,
+            'mount_point': None,
+        }
 
-    def add_mount_point(self, tag, mount_point):
-        item = self._tags.get(tag)
-        if item is None:
-            raise UnknownTag(tag)
+    def set_dev(self, tag, dev):
+        item = self._get(tag)
+        if item['dev'] is not None:
+            raise AlreadyHasDev(tag)
+        item['dev'] = dev
+
+    def set_mount_point(self, tag, mount_point):
+        item = self._get(tag)
         if item['mount_point'] is not None:
             raise AlreadyMounted(tag)
         item['mount_point'] = mount_point
 
-    def _new(self, tag, dev, mount_point):
-        self._tags[tag] = {
-            'dev': dev,
-            'mount_point': mount_point,
-        }
+    def _get(self, tag):
+        item = self._tags.get(tag)
+        if item is None:
+            raise UnknownTag(tag)
+        return item
 
 
 class TagInUse(Exception):
@@ -78,6 +83,12 @@ class UnknownTag(Exception):
 
     def __init__(self, tag):
         super().__init__('Unknown tag: {}'.format(tag))
+
+
+class AlreadyHasDev(Exception):
+
+    def __init__(self, tag):
+        super().__init__('Already has device: {}'.format(tag))
 
 
 class AlreadyMounted(Exception):
