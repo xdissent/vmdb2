@@ -8,8 +8,16 @@ steps:
   - mkpart: primary
     device: "{{ output }}"
     start: 0%
+    end: 1M
+    tag: unused
+
+  - mkpart: primary
+    device: "{{ output }}"
+    start: 1M
     end: 100%
     tag: rootfs
+
+  - kpartx: "{{ output }}"
 
   - mkfs: ext4
     partition: rootfs
