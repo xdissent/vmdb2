@@ -30,6 +30,7 @@ class PartitionPlugin(cliapp.Plugin):
     def enable(self):
         self.app.step_runners.add(MklabelStepRunner())
         self.app.step_runners.add(MkpartStepRunner())
+        self.app.step_runners.add(KpartxStepRunner())
 
 
 class MklabelStepRunner(vmdb.StepRunnerInterface):
@@ -62,17 +63,15 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
 
         orig = self.list_partitions(device)
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, fs_type, start, end])
-        new = self.list_partitions(device)
-        diff = self.diff_partitions(orig, new)
-        print('diff:', diff)
-        assert len(diff) == 1
 
+        state.tags.append(part_tag)
         if self.is_block_dev(device):
-            self.remember_partition(state, diff[0], part_tag)
-        else:
-            part_dev = self.create_loop_dev(device)
-            assert part_dev is not None
-            self.remember_partition(state, part_dev, part_tag)
+            new = self.list_partitions(device)
+            diff = self.diff_partitions(orig, new)
+            print('diff:', diff)
+            assert len(diff) == 1
+            vmdb.progress('remembering partition', part_dev, 'as', part_tag)
+            state.tags.set_dev(part_tag, diff[0])
 
     def is_block_dev(self, filename):
         st = os.lstat(filename)
@@ -98,21 +97,28 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
             if line not in old
         ]
 
-    def remember_partition(self, state, part_dev, part_tag):
-        print('remembering partition', part_dev, 'as', part_tag)
-        state.tags.add_partition(part_tag, part_dev)
 
-    def create_loop_dev(self, device):
-        vmdb.runcmd(['kpartx', '-dsv', device])
+class KpartxStepRunner(vmdb.StepRunnerInterface):
+
+    def get_required_keys(self):
+        return ['kpartx']
+
+    def run(self, step, settings, state):
+        device = step['kpartx']
+        tags = state.tags.get_tags()
+        devs = self.kpartx(device)
+        for tag, dev in zip(tags, devs):
+            vmdb.progress('remembering {} as {}'.format(dev, tag))
+            state.tags.set_dev(tag, dev)
+
+    def kpartx(self, device):
         output = vmdb.runcmd(['kpartx', '-asv', device]).decode('UTF-8')
-        device_file = None
         for line in output.splitlines():
             words = line.split()
             if words[0] == 'add':
                 name = words[2]
-                return '/dev/mapper/{}'.format(name)
-        return None
+                yield '/dev/mapper/{}'.format(name)
 
     def teardown(self, step, settings, state):
-        device = step['device']
+        device = step['kpartx']
         vmdb.runcmd(['kpartx', '-dsv', device])
