@@ -53,8 +53,6 @@ class ShellStepRunner(vmdb.StepRunnerInterface):
         shell = step['shell']
         fs_tag = step['root-fs']
 
-        vmdb.progress(
-            'run shell {}'.format(' '.join(shell.split('\n'))))
         env = dict(os.environ)
         env['ROOT'] = state.get_mount_point(fs_tag)
         vmdb.runcmd(['sh', '-c', shell], env=env)

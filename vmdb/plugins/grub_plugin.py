@@ -220,7 +220,6 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
         return os.path.normpath(os.path.join(chroot, '.' + path))
 
     def install_package(self, chroot, package):
-        vmdb.progress('Install {} in chroot {}'.format(package, chroot))
         env = os.environ.copy()
         env['DEBIAN_FRONTEND'] = 'noninteractive'
         vmdb.runcmd_chroot(

@@ -41,7 +41,5 @@ class DebootstrapStepRunner(vmdb.StepRunnerInterface):
         variant = step.get('variant', '-')
         if not (suite and tag and target and mirror):
             raise Exception('missing arg for debootstrap step')
-        vmdb.progress(
-            'Debootstrap {} {} {}'.format(suite, target, mirror))
         vmdb.runcmd(['debootstrap', '--variant', variant, suite, target, mirror])
         vmdb.runcmd_chroot(target, ['apt-get', 'update'])

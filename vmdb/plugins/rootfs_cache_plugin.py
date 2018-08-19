@@ -49,8 +49,6 @@ class MakeCacheStepRunner(vmdb.StepRunnerInterface):
         if not tar_path:
             raise Exception('--rootfs-tarball MUST be set')
         if not os.path.exists(tar_path):
-            vmdb.progress(
-                'Caching contents of {} to {}'.format(rootdir, tar_path))
             vmdb.runcmd(['tar'] + opts + ['-C', rootdir, '-caf', tar_path, '.'])
 
 
@@ -66,8 +64,6 @@ class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
         if not tar_path:
             raise Exception('--rootfs-tarball MUST be set')
         if os.path.exists(tar_path):
-            vmdb.progress(
-                'Unpacking rootfs from {} to {}'.format(tar_path, rootdir))
             vmdb.runcmd(
                 ['tar', '-C', rootdir, '-xf', tar_path, '--numeric-owner'])
             state.rootfs_unpacked = True
