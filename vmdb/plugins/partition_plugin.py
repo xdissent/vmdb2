@@ -67,7 +67,7 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
             new = self.list_partitions(device)
             diff = self.diff_partitions(orig, new)
             assert len(diff) == 1
-            vmdb.progress('remembering partition', diff[0], 'as', tag)
+            vmdb.progress('remembering partition {} as {}'.format(diff[0], tag))
             state.tags.set_dev(tag, diff[0])
 
     def is_block_dev(self, filename):
