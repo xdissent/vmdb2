@@ -100,8 +100,8 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             raise Exception('Unknown GRUB flavor {}'.format(flavor))
 
     def install_uefi(self, step, settings, state):
-        if not 'efi' in step:
-            raise Exception('"efi" is required in UEFI GRUB installtion')
+        if not 'efi' in step and 'efi-part' not in step:
+            raise Exception('"efi" or "efi-part" required in UEFI GRUB installtion')
 
         vmdb.progress('Installing GRUB for UEFI')
         grub_package = 'grub-efi-amd64'
@@ -117,7 +117,9 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
     def install_grub(self, step, settings, state, grub_package, grub_target):
         console = step.get('console', None)
 
-        tag = step['tag']
+        tag = step.get('tag')
+        if tag is None:
+            tag = step['root-fs']
         root_dev = state.tags.get_dev(tag)
         chroot = state.tags.get_mount_point(tag)
 
@@ -127,6 +129,9 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
 
         if 'efi' in step:
             efi = step['efi']
+            efi_dev = state.tags.get_dev(efi)
+        elif 'efi-part' in step:
+            efi = step['efi-part']
             efi_dev = state.tags.get_dev(efi)
         else:
             efi_dev = None

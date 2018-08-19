@@ -41,7 +41,9 @@ class AptStepRunner(vmdb.StepRunnerInterface):
             raise Exception('"apt" must always have value "install"')
 
         packages = step['packages']
-        tag = step['tag']
+        tag = step.get('tag')
+        if tag is None:
+            tag = step['fs-tag']
         mount_point = state.tags.get_mount_point(tag)
 
         if not self.got_eatmydata(state):

@@ -54,24 +54,21 @@ class MkpartStepRunner(vmdb.StepRunnerInterface):
         device = step['device']
         start = step['start']
         end = step['end']
-        part_tag = step['tag']
+        tag = step.get('tag')
+        if tag is None:
+            tag = step['part-tag']
         fs_type = step.get('fs-type', 'ext2')
-
-        vmdb.progress(
-            'Creating partition ({}) on {} ({} to {})'.format(
-                part_type, device, start, end))
 
         orig = self.list_partitions(device)
         vmdb.runcmd(['parted', '-s', device, 'mkpart', part_type, fs_type, start, end])
 
-        state.tags.append(part_tag)
+        state.tags.append(tag)
         if self.is_block_dev(device):
             new = self.list_partitions(device)
             diff = self.diff_partitions(orig, new)
-            print('diff:', diff)
             assert len(diff) == 1
-            vmdb.progress('remembering partition', part_dev, 'as', part_tag)
-            state.tags.set_dev(part_tag, diff[0])
+            vmdb.progress('remembering partition', diff[0], 'as', tag)
+            state.tags.set_dev(tag, diff[0])
 
     def is_block_dev(self, filename):
         st = os.lstat(filename)
