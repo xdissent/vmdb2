@@ -25,7 +25,7 @@
 import vmdb
 
 
-class Image:
+class Tags:
 
     def __init__(self):
         self._tags = {}

@@ -47,7 +47,7 @@ class Vmdb2(cliapp.Application):
 
         spec = self.load_spec_file(args[0])
         state = vmdb.State()
-        state.tags = vmdb.Image()
+        state.tags = vmdb.Tags()
         params = self.create_template_vars(state)
         steps = spec.get_steps(params)
 
