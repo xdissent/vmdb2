@@ -7,13 +7,13 @@ steps:
 
   - mkpart: primary
     device: "{{ output }}"
-    start: 0%
-    end: 1M
+    start: 1M
+    end: 10M
     tag: unused
 
   - mkpart: primary
     device: "{{ output }}"
-    start: 1M
+    start: 10M
     end: 100%
     tag: rootfs
 
