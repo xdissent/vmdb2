@@ -22,6 +22,8 @@ Version 0.13.2+git, not yet released
   installed. This was necessary to allow vmdb2 to install Debian onto
   real hardware.
 
+* The smoke test now tests a UEFI image as well.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
