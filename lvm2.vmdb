@@ -1,0 +1,69 @@
+# This is a sample VMDB2 input file to specify a simple
+# system that boots on a PC with BIOS. Uses LVM2.
+
+steps:
+  - mkimg: "{{ image }}"
+    size: 4G
+
+  - mklabel: msdos
+    device: "{{ image }}"
+
+  - mkpart: primary
+    device: "{{ image }}"
+    start: 1M
+    end: 100M
+    tag: /boot
+
+  - mkpart: primary
+    device: "{{ image }}"
+    start: 100M
+    end: 2G
+    tag: /rootpv
+
+  - cryptsetup: /rootpv
+    tag: rootpv_crypt
+    key-cmd: echo lvm2.lukskey
+
+  - vgcreate: rootvg
+    physical:
+      - rootpv_crypt
+
+  - lvcreate: rootvg
+    name: rootfs
+    size: 1G
+
+  - mkfs: ext2
+    partition: /boot
+
+  - mkfs: ext4
+    partition: rootfs
+
+  - mount: /boot
+
+  - mount: rootfs
+
+  - unpack-rootfs: rootfs
+
+  - debootstrap: stretch
+    mirror: http://deb.debian.org/debian
+    target: rootfs
+    unless: rootfs_unpacked
+
+  - apt: install
+    packages:
+      - linux-image-amd64
+    tag: rootfs
+    unless: rootfs_unpacked
+
+  - cache-rootfs: rootfs
+    unless: rootfs_unpacked
+
+  - chroot: rootfs
+    shell: |
+      sed -i '/^root:[^:]*:/s//root::/' /etc/passwd
+      echo pc-vmdb2 > /etc/hostname
+
+  - grub: bios
+    tag: rootfs
+    image-dev: "{{ image }}"
+    console: serial

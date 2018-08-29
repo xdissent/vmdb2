@@ -28,6 +28,8 @@ Version 0.13.2+git, not yet released
   chroot, overwriting what the tarball has. This allows vmdb2 to work
   with a tarball generated in a different network location.
 
+* Add plugins for doing full-disk encryption via cryptsetup, and LVM2.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 

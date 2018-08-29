@@ -161,6 +161,7 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             ])
 
         self.set_grub_cmdline_config(chroot, kernel_params)
+        self.add_grub_crypto_disk(chroot)
         if console == 'serial':
             self.add_grub_serial_console(chroot)
 
@@ -255,3 +256,8 @@ class GrubStepRunner(vmdb.StepRunnerInterface):
             f.write('GRUB_TERMINAL=serial\n')
             f.write('GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 '
                     '--word=8 --parity=no --stop=1"\n')
+
+    def add_grub_crypto_disk(self, chroot):
+        filename = self.chroot_path(chroot, '/etc/default/grub')
+        with open(filename, 'a') as f:
+            f.write('GRUB_ENABLE_CRYPTODISK=y\n')
