@@ -66,4 +66,9 @@ class UnpackCacheStepRunner(vmdb.StepRunnerInterface):
         if os.path.exists(tar_path):
             vmdb.runcmd(
                 ['tar', '-C', rootdir, '-xf', tar_path, '--numeric-owner'])
+            self.copy_resolv_conf(rootdir)
             state.rootfs_unpacked = True
+
+    def copy_resolv_conf(self, rootdir):
+        filename = os.path.join(rootdir, 'etc', 'resolv.conf')
+        vmdb.runcmd(['cp', '/etc/resolv.conf', filename])

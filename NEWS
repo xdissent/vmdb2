@@ -24,6 +24,10 @@ Version 0.13.2+git, not yet released
 
 * The smoke test now tests a UEFI image as well.
 
+* The rootfs unpacking action now copies `/etc/resolv.conf` into the
+  chroot, overwriting what the tarball has. This allows vmdb2 to work
+  with a tarball generated in a different network location.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
