@@ -42,6 +42,8 @@ class MkfsStepRunner(vmdb.StepRunnerInterface):
         if 'label' in step:
             if fstype == 'vfat':
                 cmd.append('-n')
+            elif fstype == 'f2fs':
+                cmd.append('-l')
             else:
                 cmd.append('-L')
             cmd.append(step['label'])
