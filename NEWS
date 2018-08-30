@@ -30,6 +30,8 @@ Version 0.13.2+git, not yet released
 
 * Add plugins for doing full-disk encryption via cryptsetup, and LVM2.
 
+* There is now some documentation.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
