@@ -1,0 +1,20 @@
+Step: `debootstrap`
+-----------------------------------------------------------------------------
+
+Install packages using apt, which needs to already have been
+installed.
+
+Step keys:
+
+* `debootstrap` &mdash; REQUIRED; value is the codename of the Debian
+  release to install: `stretch`, `buster`, etc.
+
+* `target` &mdash; REQUIRED; value is the tag for the root filesystem.
+
+* `mirror` &mdash; OPTIONAL; which Debian mirror to use
+
+Example (in the .vmdb file):
+
+    - debootstrap: stretch
+      target: root
+      mirror: http://mirror.example.com/debian

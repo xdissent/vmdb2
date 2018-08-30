@@ -1,0 +1,28 @@
+Step: `qemu-debootstrap`
+-----------------------------------------------------------------------------
+
+Install packages using apt, which needs to already have been
+installed, for a different architecture than the host where vmdb2 is
+being run. For example, for building an image for a Raspberry Pi on an
+Intel PC.
+
+Step keys:
+
+* `qemu-debootstrap` &mdash; REQUIRED; value is the codename of the Debian
+  release to install: `stretch`, `buster`, etc.
+
+* `target` &mdash; REQUIRED; value is the tag for the root filesystem.
+
+* `mirror` &mdash; OPTIONAL; which Debian mirror to use.
+
+* `arch` &mdash; REQUIRED; the foreign architecture touse.
+
+* `variant` &mdash; OPTIONAL; the variant for debootstrap.
+
+Example (in the .vmdb file):
+
+    - qemu-debootstrap: stretch
+      target: root
+      mirror: http://mirror.example.com/debian
+      arch: arm64
+      variant: buildd

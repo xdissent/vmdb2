@@ -1,0 +1,33 @@
+Step: `luks`
+-----------------------------------------------------------------------------
+
+Set up disk encryption using LUKS with the `cryptsetup` utility. The
+encryption passphrase is read from a file or from the output of a
+command. The encrypted disk gets opened and can be mounted using a
+separate tag for the cleartext view.
+
+Step keys:
+
+* `cryptsetup` &mdash; REQUIRED; value is the tag for the encrypted
+  block device. This is not directly useable by users, or mountable.
+
+* `tag` &mdash; REQUIRED; the tag for the de-crypted block device.
+  This is what gets mounted and visible to users.
+
+* `key-file` &mdash; OPTIONAL; file from where passphrase is read.
+
+* `key-cmd` &mdash; OPTIONAL; command to run, passphrase is the first
+  line of its standard output.
+
+Example (in the .vmdb file):
+
+    - cryptsetup: root
+      tag: root_crypt
+      key-file: disk.pass
+
+Same, except run a command to get passphrase (in this case
+[pass](https://www.passwordstore.org/)):
+
+    - cryptsetup: root
+      tag: root_crypt
+      key-cmd: pass show disk-encryption

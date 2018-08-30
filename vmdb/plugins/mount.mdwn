@@ -1,0 +1,17 @@
+Step: `mount`
+-----------------------------------------------------------------------------
+
+Mount a filesystem.
+
+Step keys:
+
+* `mount` &mdash; REQUIRED; tag of filesystem to mount.
+
+* `dirname` &mdash; OPTIONAL; the mount point.
+
+* `mount-on` &mdash; OPTIONAL; tag of already mounted filesystem in
+  image. (FIXME: this may be wrong?)
+
+Example (in the .vmdb file):
+
+    - mount: root

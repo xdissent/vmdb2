@@ -1,0 +1,15 @@
+Step: `mkfs`
+-----------------------------------------------------------------------------
+
+Create a filesystem.
+
+Step keys:
+
+* `mkfs` &mdash; REQUIRED; filesystem type, such as `mkfs` or `vfat`.
+
+* `partition` &mdash; REQUIRED; tag for the block device to use.
+
+Example (in the .vmdb file):
+
+    - mkfs: ext4
+      partition: root

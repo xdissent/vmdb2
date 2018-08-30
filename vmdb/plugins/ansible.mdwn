@@ -1,0 +1,47 @@
+Step: `ansible`
+-----------------------------------------------------------------------------
+
+Run Ansible using a provided playbook, to configure the image. vmdb2
+sets up Ansible so that it treats the image as the host being
+configured (via the `chroot` connecion). The image MUST have Python
+installed (version 2 or 3 depending on Ansible version).
+
+Step keys:
+
+* `ansible` &mdash; REQUIRED; value is the tag of the root filesystem.
+
+* `playbook` &mdash; REQUIRED; value is the filename of the Ansible
+  playbook, relative to the .vmdb file.
+
+Example (in the .vmdb file):
+
+    - apt: install
+      tag: root
+      packages: [python]
+
+    - ansible: root
+      playbook: foo.yml
+
+Example (`foo.yml`):
+
+    - hosts: image
+      tasks:
+
+        - name: "set /etc/hostname"
+          shell: |
+            echo "{{ hostname }}" > /etc/hostname
+
+        - name: "unset root password"
+          shell: |
+            sed -i '/^root:[^:]*:/s//root::/' /etc/passwd
+
+        - name: "configure networking"
+          copy:
+            content: |
+              auto eth0
+              iface eth0 inet dhcp
+              iface eth0 inet6 auto
+            dest: /etc/network/interfaces.d/wired
+
+      vars:
+        hostname: discworld

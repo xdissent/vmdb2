@@ -1,0 +1,44 @@
+Step: `grub`
+-----------------------------------------------------------------------------
+
+Install the GRUB bootloader to the image. Works on a PC, for
+traditional BIOS booting or modern UEFI booting. Does not (yet?)
+support Secure Boot.
+
+Warning: This is the least robust part of vmdb2.
+
+Step keys:
+
+* `grub` &mdash; REQUIRED; value MUST be one of `uefi` and `bios`, for
+  a UEFI or a BIOS boot, respectively. (FIXME: these are valid for a
+  PC; not sure what other archs require, if grub even works there.)
+
+* `tag` &mdash; REQUIRED; value is the tag for the root filesystem.
+
+* `efi` &mdash; REQUIRED for UEFI; value is the tag for the EFI
+  filesystem.
+
+* `console` &mdash; OPTIONAL; set to `serial` to configure the image
+  to use a serial console.
+
+* `device` &mdash; OPTIONAL; which device to install GRUB onto; this
+  is needed when installing to a real hard drive, instead of an image.
+
+Example (in the .vmdb file):
+
+    - grub: bios
+      tag: root
+
+Same, but for UEFI:
+
+    - grub: uefi
+      tag: root
+      efi: efi
+      console: serial
+
+Install to a real hard disk (named with the `--image` option):
+
+    - grub: uefi
+      tag: root
+      efi: efi
+      image-dev: "{{ image }}"

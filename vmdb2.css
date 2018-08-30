@@ -1,0 +1,33 @@
+html {
+    font-family: "FreeSerif", serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "FreeSans", sans;
+}
+
+header h1.title {
+    display: block;
+    text-align: center;
+    font-family: "FreeSans", sans;
+    font-size: 200%;
+}
+
+header h2.author {
+    display: block;
+    text-align: center;
+    font-family: "FreeSans", sans;
+    font-size: 150%;
+}
+
+
+header h3.date {
+    display: block;
+    text-align: center;
+    font-family: "FreeSans", sans;
+    font-size: 150%;
+}
+
+pre {
+    margin-left: 4em;
+}

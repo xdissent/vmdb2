@@ -1,0 +1,21 @@
+Step: `apt`
+-----------------------------------------------------------------------------
+
+Install packages using apt, which needs to already have been
+installed.
+
+Step keys:
+
+* `apt` &mdash; REQUIRED; value MUST be `install`.
+
+* `tag` &mdash; REQUIRED; value is the tag for the root filesystem.
+
+* `packages` &mdash; REQUIRED; value is a list of packages to install.
+
+Example (in the .vmdb file):
+
+    - apt: install
+      tag: root
+      packages:
+      - python
+      - linux-image-amd64

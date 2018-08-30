@@ -1,0 +1,15 @@
+Step: `mkimg`
+-----------------------------------------------------------------------------
+
+Create a new image file of a desired size.
+
+Step keys:
+
+* `mkimage` &mdash; REQUIRED; name of file to create.
+
+* `size` &mdash; REQUIRED; size of the image.
+
+Example (in the .vmdb file):
+
+    - mkimg: "{{ output }}"
+      size: 4G
