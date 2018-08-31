@@ -14,6 +14,7 @@ vmdb/plugins/error_plugin.py
 vmdb/plugins/grub_plugin.py
 vmdb/plugins/kernel_plugin.py
 vmdb/plugins/lvm2_plugin.py
+vmdb/plugins/luks_plugin.py
 vmdb/plugins/mkfs_plugin.py
 vmdb/plugins/mkimg_plugin.py
 vmdb/plugins/mount_plugin.py
