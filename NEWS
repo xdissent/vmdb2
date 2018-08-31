@@ -32,6 +32,8 @@ Version 0.13.2+git, not yet released
 
 * There is now some documentation.
 
+* Christian Schlüter added support for f2fs labels in the `mkfs` step.
+
 Version 0.13.2, released 2018-05-06
 ------------------------------------
 
