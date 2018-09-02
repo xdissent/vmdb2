@@ -45,6 +45,7 @@ class VgcreateStepRunner(vmdb.StepRunnerInterface):
         vmdb.runcmd(['vgcreate', vgname] + physical)
 
     def teardown(self, step, settings, state):
+        vgname = self.get_vg(step)
         vmdb.runcmd(['vgchange', '-an', vgname])
 
     def get_vg(self, step):
