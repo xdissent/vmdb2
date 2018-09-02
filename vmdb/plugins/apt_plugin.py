@@ -64,6 +64,12 @@ class AptStepRunner(vmdb.StepRunnerInterface):
         vmdb.runcmd_chroot(
             mount_point,
             argv_prefix +
+            ['apt-get', 'update'],
+            env=env)
+
+        vmdb.runcmd_chroot(
+            mount_point,
+            argv_prefix +
             ['apt-get', '-y', '--no-show-progress', 'install'] + packages,
             env=env)
 
