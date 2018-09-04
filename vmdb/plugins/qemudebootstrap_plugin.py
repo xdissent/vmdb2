@@ -41,13 +41,13 @@ class QemuDebootstrapStepRunner(vmdb.StepRunnerInterface):
         variant = step.get('variant', '-')
         arch = step['arch']
         components = step.get('components', ['main'])
+        opts = step.get('options', '').split()
         if not (suite and tag and target and mirror and arch):
             raise Exception('missing arg for qemu-debootstrap step')
         vmdb.runcmd(
             ['qemu-debootstrap',
              '--arch', arch,
              '--variant', variant,
-             '--components', ','.join(components), suite,
-             target,
-             mirror])
+             '--components', ','.join(components)] +
+            opts + [suite, target, mirror])
         vmdb.runcmd_chroot(target, ['apt-get', 'update'])
